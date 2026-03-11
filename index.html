@@ -17,7 +17,7 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .active-tab { background: #3b82f6 !important; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); border: none !important; }
         .active-view { border-bottom: 3px solid #3b82f6; color: white !important; }
-        .checked-ex { opacity: 0.25; text-decoration: line-through; filter: grayscale(1); transform: scale(0.98); transition: all 0.3s; }
+        .checked-ex { opacity: 0.25; text-decoration: line-through; filter: grayscale(1); transform: scale(0.98); }
         .loader { border-top-color: #3b82f6; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
@@ -26,7 +26,7 @@
 
     <div id="section-app" class="max-w-2xl mx-auto p-4 w-full">
         <header class="flex justify-between items-center py-6 mb-4">
-            <h2 id="display-name" class="text-2xl font-black italic uppercase text-blue-500 tracking-tighter">@OJEANVIANNA_</h2>
+            <h2 id="display-name" class="text-2xl font-black italic uppercase text-blue-500 tracking-tighter">@CARREGANDO...</h2>
             <button onclick="location.reload()" class="text-red-400 text-[10px] font-black uppercase border border-red-900/30 px-4 py-2 rounded-xl">Sair</button>
         </header>
 
@@ -52,7 +52,7 @@
             </div>
 
             <div class="glass p-6 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
-                <h3 class="text-xs font-black uppercase mb-4 text-blue-500 italic">Gerenciar Treino <span id="label-letter">A</span></h3>
+                <h3 class="text-xs font-black uppercase mb-4 text-blue-500 italic">Gerenciar Aba <span id="label-letter">A</span></h3>
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <input id="in-name" type="text" placeholder="Exercício" class="col-span-2 p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
                     <input id="in-weight" type="text" placeholder="Peso" class="p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
@@ -64,25 +64,24 @@
             </div>
 
             <div id="list-workouts" class="space-y-4 mb-8"></div>
-            
-            <button onclick="finishSession()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg active:scale-95 transition-all">Finalizar Treino <span id="finish-label">A</span></button>
+            <button onclick="finishSession()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg active:scale-95 transition-all">Concluir Treino <span id="finish-label">A</span></button>
             
             <div class="mt-10 pt-8 border-t border-white/10">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-black uppercase text-gray-500 italic">Histórico</h3>
-                    <button onclick="clearHistory()" class="text-[9px] text-red-500 font-bold uppercase underline italic">Limpar Tudo</button>
+                <div class="flex justify-between items-center mb-4 text-gray-500">
+                    <h3 class="text-xs font-black uppercase italic">Histórico</h3>
+                    <button onclick="clearHistory()" class="text-[9px] font-bold uppercase underline">Limpar Tudo</button>
                 </div>
                 <div id="history-list" class="space-y-2"></div>
             </div>
         </div>
 
         <div id="view-evolution" class="hidden">
-            <div class="glass p-8 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
-                <h3 class="text-center font-black uppercase mb-6 italic text-xs text-blue-500">Registrar Shape</h3>
-                <div class="space-y-4">
-                    <input type="file" id="file-photo" accept="image/*" class="block w-full text-xs text-gray-500 file:bg-blue-600 file:text-white file:rounded-full file:border-0 file:px-4 file:py-1">
-                    <input type="number" id="input-weight-evo" placeholder="Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
-                    <button id="btn-upload" onclick="uploadEvolution()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs flex justify-center items-center gap-2">
+            <div class="glass p-8 rounded-[2rem] mb-8 border border-white/5 shadow-2xl text-center">
+                <h3 class="font-black uppercase mb-6 italic text-xs text-blue-500">Nova Foto de Evolução</h3>
+                <div class="space-y-4 text-left">
+                    <input type="file" id="file-photo" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-600 file:text-white">
+                    <input type="number" id="input-weight-evo" placeholder="Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs">
+                    <button onclick="uploadEvolution()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs flex justify-center items-center gap-2">
                         <span>Postar Shape</span>
                         <div id="spin-upload" class="hidden loader rounded-full border-2 border-white h-4 w-4"></div>
                     </button>
@@ -118,16 +117,15 @@
             }
         };
 
-        // --- FUNÇÕES DE TREINO ---
+        // --- TREINOS ---
         async function saveWorkout() {
             const name = document.getElementById('in-name').value;
             const weight = document.getElementById('in-weight').value;
             const reps = document.getElementById('in-reps').value;
             const notes = document.getElementById('in-notes').value;
-            if(!name) return alert("Exercício sem nome!");
+            if(!name) return alert("Dê um nome ao exercício!");
 
             const payload = { user_id: currentUser.id, category: currentLetter, exercise_name: name, weight: String(weight), reps: String(reps), notes: notes };
-            
             if(editingId) {
                 await _supabase.from('workouts').update(payload).eq('id', editingId);
                 editingId = null;
@@ -142,15 +140,15 @@
             document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
                 <div id="ex-${ex.id}" class="glass p-5 rounded-2xl border border-white/5 flex justify-between items-center transition-all">
                     <div class="flex items-center gap-4">
-                        <input type="checkbox" onchange="document.getElementById('ex-${ex.id}').classList.toggle('checked-ex', this.checked)" class="w-6 h-6 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600 transition-all cursor-pointer">
+                        <input type="checkbox" onchange="document.getElementById('ex-${ex.id}').classList.toggle('checked-ex', this.checked)" class="w-6 h-6 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600 cursor-pointer">
                         <div>
                             <h4 class="font-black uppercase text-sm italic">${ex.exercise_name}</h4>
                             <p class="text-[10px] text-blue-500 font-bold mt-1">${ex.weight}kg • ${ex.reps}</p>
-                            ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-1 italic italic">${ex.notes}</p>` : ''}
+                            ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-1 italic">${ex.notes}</p>` : ''}
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
-                        <button onclick='editEx(${JSON.stringify(ex)})' class="text-blue-400 text-[10px] font-black uppercase italic underline">Editar</button>
+                        <button onclick='editEx(${JSON.stringify(ex)})' class="text-blue-400 text-[10px] font-black uppercase underline">Editar</button>
                         <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase underline">Apagar</button>
                     </div>
                 </div>
@@ -164,7 +162,6 @@
             document.getElementById('in-reps').value = ex.reps;
             document.getElementById('in-notes').value = ex.notes || '';
             document.getElementById('btn-save').innerText = "Atualizar Exercício";
-            document.getElementById('btn-save').classList.replace('bg-blue-600', 'bg-yellow-600');
             document.getElementById('btn-cancel').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -176,7 +173,6 @@
             document.getElementById('in-reps').value = '';
             document.getElementById('in-notes').value = '';
             document.getElementById('btn-save').innerText = "Salvar Exercício";
-            document.getElementById('btn-save').classList.replace('bg-yellow-600', 'bg-blue-600');
             document.getElementById('btn-cancel').classList.add('hidden');
         }
 
@@ -188,14 +184,23 @@
             const file = fileInput.files[0];
             const weight = document.getElementById('input-weight-evo').value;
             if(!file || !weight) return alert("Selecione foto e peso!");
+
             document.getElementById('spin-upload').classList.remove('hidden');
             const name = `${Date.now()}_${file.name}`;
-            const { error: upErr } = await _supabase.storage.from('formas').upload(name, file);
-            if(upErr) { alert("Erro Bucket: " + upErr.message); document.getElementById('spin-upload').classList.add('hidden'); return; }
-            const { data: urlData } = _supabase.storage.from('formas').getPublicUrl(name);
+            
+            // NOME CORRIGIDO: shapes
+            const { error: upErr } = await _supabase.storage.from('shapes').upload(name, file);
+            
+            if(upErr) { 
+                alert("Erro no balde 'shapes': " + upErr.message); 
+                document.getElementById('spin-upload').classList.add('hidden'); 
+                return; 
+            }
+
+            const { data: urlData } = _supabase.storage.from('shapes').getPublicUrl(name);
             await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: urlData.publicUrl, body_weight: weight }]);
             document.getElementById('spin-upload').classList.add('hidden');
-            loadGallery();
+            alert("Shape Salvo!"); loadGallery();
         }
 
         async function loadGallery() {
@@ -224,16 +229,16 @@
         async function updateStats() {
             const { data } = await _supabase.from('workout_history').select('*').eq('user_id', currentUser.id).order('completed_at', {ascending: false});
             document.getElementById('history-list').innerHTML = (data || []).slice(0, 5).map(h => `
-                <div class="flex justify-between items-center text-[10px] bg-white/5 p-3 rounded-lg font-bold italic border border-white/5 shadow-sm">
+                <div class="flex justify-between items-center text-[10px] bg-white/5 p-3 rounded-lg font-bold italic border border-white/5">
                     <span class="text-blue-500 uppercase tracking-widest italic">Treino ${h.category} - ${new Date(h.completed_at).toLocaleDateString()}</span>
-                    <button onclick="deleteHistory('${h.id}')" class="text-red-900 uppercase font-black text-[8px] underline italic">Excluir</button>
+                    <button onclick="deleteHistory('${h.id}')" class="text-red-900 uppercase font-black text-[8px] underline">Excluir</button>
                 </div>
             `).join('');
         }
 
         async function deleteHistory(id) { if(confirm("Excluir histórico?")) { await _supabase.from('workout_history').delete().eq('id', id); updateStats(); } }
         async function finishSession() { await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]); alert("Treino batido!"); updateStats(); }
-        function changeLetter(l, btn) { currentLetter = l; document.getElementById('finish-label').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); cancelEdit(); loadWorkouts(); }
+        function changeLetter(l, btn) { currentLetter = l; document.getElementById('finish-label').innerText = l; document.getElementById('label-letter').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); cancelEdit(); loadWorkouts(); }
         function switchView(v) { document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); document.getElementById('nav-workouts').classList.toggle('active-view', v === 'workouts'); document.getElementById('nav-evolution').classList.toggle('active-view', v === 'evolution'); }
         async function clearHistory() { if(confirm("Limpar tudo?")) { await _supabase.from('workout_history').delete().eq('user_id', currentUser.id); updateStats(); } }
     </script>
