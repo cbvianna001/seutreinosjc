@@ -24,33 +24,43 @@
         .app-logo { font-size: 2.2rem; font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -1px; color: #3b82f6; }
         .app-logo span { color: white; }
         
-        /* Modal de Foto */
         #photo-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
         #modal-img { max-width: 100%; max-height: 80vh; border-radius: 1rem; object-fit: contain; }
     </style>
 </head>
 <body class="text-white min-h-screen flex flex-col pb-10">
 
+    <div id="section-login" class="flex flex-col items-center justify-center min-h-screen p-6">
+         <div class="flex items-center gap-3 mb-8">
+            <span class="text-4xl text-blue-500">🏋️‍♂️</span>
+            <h1 class="app-logo">Sanja<span>Fit</span></h1>
+        </div>
+        <div class="glass p-8 rounded-[2rem] w-full max-w-md shadow-2xl">
+            <input id="login-user" type="text" placeholder="@seu_instagram" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500 text-white">
+            <input id="login-pass" type="password" placeholder="Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500 text-white">
+            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all">Entrar</button>
+            <button onclick="handleSignUp()" class="w-full mt-6 text-[10px] text-gray-500 font-bold uppercase hover:text-white transition-colors tracking-widest text-center">Registrar Atleta</button>
+        </div>
+    </div>
+
     <div id="photo-modal">
         <button onclick="closeModal()" class="absolute top-5 right-5 text-white font-black text-2xl">✕</button>
         <img id="modal-img" src="" alt="Shape">
         <div class="mt-6 flex flex-col items-center gap-4">
             <span id="modal-info" class="text-xs font-bold italic text-blue-500"></span>
-            <button id="btn-delete-photo" class="bg-red-600 px-8 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest flex items-center gap-2">
-                🗑️ Excluir Foto
-            </button>
+            <button id="btn-delete-photo" class="bg-red-600 px-8 py-3 rounded-xl font-black uppercase text-[10px] tracking-widest flex items-center gap-2">🗑️ Excluir Foto</button>
         </div>
     </div>
 
-    <div id="section-app" class="max-w-2xl mx-auto p-4 w-full">
+    <div id="section-app" class="hidden max-w-2xl mx-auto p-4 w-full">
         <header class="flex flex-col items-center py-6 mb-4">
             <div class="flex items-center gap-3 mb-4">
                 <span class="text-4xl text-blue-500">🏋️‍♂️</span>
                 <h1 class="app-logo">Sanja<span>Fit</span></h1>
             </div>
             <div class="flex justify-between items-center w-full">
-                <h2 id="display-name" class="text-xl font-black italic text-blue-500 underline decoration-blue-800 underline-offset-4">@CARREGANDO</h2>
-                <button onclick="location.reload()" class="text-red-400 text-[10px] font-black uppercase border border-red-900/30 px-4 py-2 rounded-xl">Sair</button>
+                <h2 id="display-name" class="text-xl font-black italic text-blue-500 underline decoration-blue-800 underline-offset-4 tracking-tighter">@USUARIO</h2>
+                <button onclick="handleSignOut()" class="text-red-400 text-[10px] font-black uppercase border border-red-900/30 px-4 py-2 rounded-xl">Sair</button>
             </div>
         </header>
 
@@ -71,42 +81,35 @@
             <div class="glass p-4 rounded-3xl mb-8">
                 <canvas id="freqChart" height="100"></canvas>
             </div>
-
             <div class="grid grid-cols-4 gap-2 mb-8 text-center">
                 <button onclick="changeLetter('A', this)" class="letter-btn p-4 rounded-xl glass font-black active-tab">A</button>
                 <button onclick="changeLetter('B', this)" class="letter-btn p-4 rounded-xl glass font-black">B</button>
                 <button onclick="changeLetter('C', this)" class="letter-btn p-4 rounded-xl glass font-black">C</button>
                 <button onclick="changeLetter('D', this)" class="letter-btn p-4 rounded-xl glass font-black">D</button>
             </div>
-
             <div class="glass p-6 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
                 <h3 class="text-xs font-black uppercase mb-4 text-blue-500 italic">Gerenciar Treino <span id="label-letter">A</span></h3>
-                <div class="grid grid-cols-2 gap-3 mb-4 text-black">
-                    <input id="in-name" type="text" placeholder="Exercício" class="col-span-2 p-3 rounded-xl bg-white/10 text-white outline-none text-xs">
-                    <input id="in-weight" type="text" placeholder="Peso" class="p-3 rounded-xl bg-white/10 text-white outline-none text-xs">
-                    <input id="in-reps" type="text" placeholder="Séries" class="p-3 rounded-xl bg-white/10 text-white outline-none text-xs">
-                    <input id="in-notes" type="text" placeholder="Obs" class="col-span-2 p-3 rounded-xl bg-white/10 text-white outline-none text-xs">
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <input id="in-name" type="text" placeholder="Exercício" class="col-span-2 p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
+                    <input id="in-weight" type="text" placeholder="Peso" class="p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
+                    <input id="in-reps" type="text" placeholder="Séries" class="p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
+                    <input id="in-notes" type="text" placeholder="Obs" class="col-span-2 p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
                 </div>
                 <button id="btn-save" onclick="saveWorkout()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs tracking-widest">Salvar Exercício</button>
                 <button id="btn-cancel" onclick="cancelEdit()" class="hidden w-full mt-2 text-[10px] text-gray-500 uppercase font-bold underline">Cancelar Edição</button>
             </div>
-
             <div id="list-workouts" class="space-y-4 mb-8"></div>
             <button onclick="finishSession()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg mb-10">Concluir Treino <span id="finish-label">A</span></button>
-            
             <div id="history-list" class="space-y-2 mt-10"></div>
         </div>
 
         <div id="view-evolution" class="hidden">
-            <div class="glass p-4 rounded-3xl mb-8">
-                <canvas id="weightChart" height="150"></canvas>
-            </div>
-
+            <div class="glass p-4 rounded-3xl mb-8"><canvas id="weightChart" height="150"></canvas></div>
             <div class="glass p-8 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
                 <h3 class="text-center font-black uppercase mb-6 italic text-xs text-blue-500">Registrar Evolução</h3>
                 <div class="space-y-4">
                     <input type="file" id="file-photo" accept="image/*" class="block w-full text-xs text-gray-500 file:bg-blue-600 file:text-white file:rounded-full file:border-0 file:px-4 file:py-1">
-                    <input type="number" id="input-weight-evo" placeholder="Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs">
+                    <input type="number" id="input-weight-evo" placeholder="Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
                     <button id="btn-upload" onclick="uploadEvolution()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs flex justify-center items-center gap-2">
                         <span>Postar Shape</span>
                         <div id="spin-upload" class="hidden loader rounded-full border-2 border-white h-4 w-4"></div>
@@ -117,7 +120,7 @@
         </div>
 
         <footer class="mt-20 py-8 border-t border-white/5 text-center">
-            <p class="text-[9px] font-black text-gray-600 uppercase mb-4 italic tracking-widest text-center">Developed by</p>
+            <p class="text-[9px] font-black text-gray-600 uppercase mb-4 italic tracking-widest">Developed by</p>
             <div class="flex flex-col gap-2 italic">
                 <a href="https://instagram.com/systemsjc_" target="_blank" class="text-blue-500 font-bold text-xs">@SYSTEMSJC_</a>
                 <a href="https://instagram.com/ojeanvianna_" target="_blank" class="text-gray-400 font-bold text-[10px]">@OJEANVIANNA_</a>
@@ -136,16 +139,37 @@
         let freqChart, weightChart;
         const beep = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
 
+        // FUNÇÃO DE LOGIN CORRIGIDA
+        async function handleSignIn() {
+            const user = document.getElementById('login-user').value.trim().replace('@','');
+            const pass = document.getElementById('login-pass').value;
+            const { data, error } = await _supabase.auth.signInWithPassword({ email: `${user}@sanjafit.com`, password: pass });
+            if(error) return alert("Erro no Login. Verifique os dados.");
+            initApp(data.user);
+        }
+
+        // FUNÇÃO DE SAIR (A NOVA!)
+        async function handleSignOut() {
+            if(!confirm("Deseja realmente sair?")) return;
+            await _supabase.auth.signOut();
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.reload();
+        }
+
         window.onload = async () => {
             const { data: { user } } = await _supabase.auth.getUser();
-            if(user) {
-                currentUser = user;
-                document.getElementById('display-name').innerText = user.user_metadata.instagram || `@${user.email.split('@')[0]}`;
-                loadWorkouts(); updateStats(); loadGallery();
-            }
+            if(user) initApp(user);
         };
 
-        // --- MODAL DE FOTO ---
+        function initApp(user) {
+            currentUser = user;
+            document.getElementById('section-login').classList.add('hidden');
+            document.getElementById('section-app').classList.remove('hidden');
+            document.getElementById('display-name').innerText = user.user_metadata.instagram || `@Atleta`;
+            loadWorkouts(); updateStats(); loadGallery();
+        }
+
         function openPhoto(url, id, weight, date) {
             const modal = document.getElementById('photo-modal');
             const img = document.getElementById('modal-img');
@@ -155,36 +179,27 @@
             modal.style.display = 'flex';
         }
         function closeModal() { document.getElementById('photo-modal').style.display = 'none'; }
-
         async function deletePhoto(id, url) {
-            if(!confirm("Deseja realmente apagar esta foto da sua evolução?")) return;
-            // Apaga da tabela
+            if(!confirm("Apagar foto?")) return;
             await _supabase.from('evolution_gallery').delete().eq('id', id);
-            // Apaga do storage (opcional, mas bom pra limpar)
-            const fileName = url.split('/').pop();
-            await _supabase.storage.from('shapes').remove([fileName]);
             closeModal(); loadGallery();
         }
 
-        // --- GRÁFICOS ---
-        function initCharts(history, gallery) {
-            const fCtx = document.getElementById('freqChart').getContext('2d');
-            const wCtx = document.getElementById('weightChart').getContext('2d');
-            if(freqChart) freqChart.destroy();
-            freqChart = new Chart(fCtx, { type: 'bar', data: { labels: ['Dom','Seg','Ter','Qua','Qui','Sex','Sab'], datasets: [{ label: 'Frequência', data: [1,2,1,2,1,3,1], backgroundColor: '#3b82f6' }] }, options: { plugins: { legend: { display: false } } } });
-            
+        // GRÁFICOS
+        function initCharts(gallery) {
+            const ctx = document.getElementById('weightChart').getContext('2d');
             if(weightChart) weightChart.destroy();
             const wData = gallery.slice().reverse();
-            weightChart = new Chart(wCtx, { type: 'line', data: { labels: wData.map(p => new Date(p.created_at).toLocaleDateString()), datasets: [{ data: wData.map(p => p.body_weight), borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59,130,246,0.1)' }] }, options: { plugins: { legend: { display: false } } } });
+            weightChart = new Chart(ctx, { type: 'line', data: { labels: wData.map(p => new Date(p.created_at).toLocaleDateString()), datasets: [{ data: wData.map(p => p.body_weight), borderColor: '#3b82f6', fill: true, backgroundColor: 'rgba(59,130,246,0.1)' }] }, options: { plugins: { legend: { display: false } } } });
         }
 
-        // --- TREINOS ---
+        // TREINOS
         async function saveWorkout() {
             const name = document.getElementById('in-name').value;
             const weight = document.getElementById('in-weight').value;
             const reps = document.getElementById('in-reps').value;
             const notes = document.getElementById('in-notes').value;
-            if(!name) return alert("Exercício precisa de nome!");
+            if(!name) return alert("Nome obrigatório");
             const payload = { user_id: currentUser.id, category: currentLetter, exercise_name: name, weight: String(weight), reps: String(reps), notes: notes };
             if(editingId) { await _supabase.from('workouts').update(payload).eq('id', editingId); editingId = null; } 
             else { await _supabase.from('workouts').insert([payload]); }
@@ -194,66 +209,58 @@
         async function loadWorkouts() {
             const { data } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('category', currentLetter).order('created_at');
             document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
-                <div id="ex-${ex.id}" class="glass p-5 rounded-2xl border border-white/5 flex justify-between items-center">
+                <div id="ex-${ex.id}" class="glass p-5 rounded-2xl border border-white/5 flex justify-between items-center transition-all">
                     <div class="flex items-center gap-4">
-                        <input type="checkbox" onchange="document.getElementById('ex-${ex.id}').classList.toggle('checked-ex', this.checked)" class="w-6 h-6 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600">
-                        <div>
-                            <h4 class="font-black uppercase text-sm italic">${ex.exercise_name}</h4>
-                            <p class="text-[10px] text-blue-500 font-bold">${ex.weight}kg • ${ex.reps}</p>
-                        </div>
+                        <input type="checkbox" onchange="document.getElementById('ex-${ex.id}').classList.toggle('checked-ex', this.checked)" class="w-6 h-6 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600 transition-all cursor-pointer">
+                        <div><h4 class="font-black uppercase text-sm italic">${ex.exercise_name}</h4><p class="text-[10px] text-blue-500 font-bold">${ex.weight}kg • ${ex.reps}</p></div>
                     </div>
                     <div class="flex gap-4">
-                        <button onclick='editEx(${JSON.stringify(ex)})' class="text-blue-400 text-[10px] font-black uppercase underline italic">Editar</button>
-                        <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase underline italic">Apagar</button>
+                        <button onclick='editEx(${JSON.stringify(ex)})' class="text-blue-400 text-[10px] font-black uppercase underline">Editar</button>
+                        <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase underline">Apagar</button>
                     </div>
                 </div>
-            `).join('') || '<p class="text-center py-5 text-gray-700 text-xs italic">Aba Vazia</p>';
+            `).join('') || '<p class="text-center py-5 text-gray-700 text-xs italic">Vazio</p>';
         }
 
-        function editEx(ex) {
-            editingId = ex.id; document.getElementById('in-name').value = ex.exercise_name; document.getElementById('in-weight').value = ex.weight;
-            document.getElementById('in-reps').value = ex.reps; document.getElementById('in-notes').value = ex.notes || '';
-            document.getElementById('btn-save').innerText = "Atualizar Exercício"; document.getElementById('btn-cancel').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        function editEx(ex) { editingId = ex.id; document.getElementById('in-name').value = ex.exercise_name; document.getElementById('in-weight').value = ex.weight; document.getElementById('in-reps').value = ex.reps; document.getElementById('in-notes').value = ex.notes || ''; document.getElementById('btn-save').innerText = "Atualizar Exercício"; document.getElementById('btn-cancel').classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
         function cancelEdit() { editingId = null; document.getElementById('in-name').value = ''; document.getElementById('in-weight').value = ''; document.getElementById('in-reps').value = ''; document.getElementById('in-notes').value = ''; document.getElementById('btn-save').innerText = "Salvar Exercício"; document.getElementById('btn-cancel').classList.add('hidden'); }
 
         async function uploadEvolution() {
-            const fileInput = document.getElementById('file-photo');
-            const file = fileInput.files[0];
+            const file = document.getElementById('file-photo').files[0];
             const weight = document.getElementById('input-weight-evo').value;
             if(!file || !weight) return alert("Selecione foto e peso!");
             document.getElementById('spin-upload').classList.remove('hidden');
             const name = `${Date.now()}_${file.name}`;
             const { error: upErr } = await _supabase.storage.from('shapes').upload(name, file);
-            if(upErr) { alert("Erro Bucket: " + upErr.message); document.getElementById('spin-upload').classList.add('hidden'); return; }
+            if(upErr) { alert("Erro: " + upErr.message); document.getElementById('spin-upload').classList.add('hidden'); return; }
             const { data: urlData } = _supabase.storage.from('shapes').getPublicUrl(name);
             await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: urlData.publicUrl, body_weight: weight }]);
-            document.getElementById('spin-upload').classList.add('hidden');
-            loadGallery();
+            document.getElementById('spin-upload').classList.add('hidden'); loadGallery();
         }
 
         async function loadGallery() {
             const { data } = await _supabase.from('evolution_gallery').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false});
-            if(data) initCharts([], data);
+            if(data) initCharts(data);
             document.getElementById('list-gallery').innerHTML = (data || []).map(p => `
-                <div onclick="openPhoto('${p.photo_url}', '${p.id}', '${p.body_weight}', '${new Date(p.created_at).toLocaleDateString()}')" class="glass rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl cursor-pointer">
+                <div onclick="openPhoto('${p.photo_url}', '${p.id}', '${p.body_weight}', '${new Date(p.created_at).toLocaleDateString()}')" class="glass rounded-[2rem] overflow-hidden border border-white/5 cursor-pointer">
                     <img src="${p.photo_url}" class="w-full h-64 object-cover">
-                    <div class="p-5 flex justify-between items-center bg-black/40">
-                        <span class="text-blue-500 font-black italic text-xs uppercase">${new Date(p.created_at).toLocaleDateString()}</span>
-                        <span class="text-white font-black text-xs uppercase italic">${p.body_weight} KG</span>
-                    </div>
+                    <div class="p-5 flex justify-between items-center bg-black/40"><span class="text-blue-500 font-black italic text-xs">${new Date(p.created_at).toLocaleDateString()}</span><span class="text-white font-black text-xs">${p.body_weight} KG</span></div>
                 </div>
             `).join('');
         }
 
-        // --- AUXILIARES ---
         function startRestTimer() { let s = 30; const d = document.getElementById('timer-display'); const t = setInterval(() => { s--; d.innerText = `00:${s < 10 ? '0' + s : s}`; if (s <= 0) { clearInterval(t); d.innerText = "00:30"; beep.play(); alert("Fim do Descanso!"); } }, 1000); }
-        async function deleteEx(id) { if(confirm("Remover exercício?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
         async function updateStats() { const { data } = await _supabase.from('workout_history').select('*').eq('user_id', currentUser.id).order('completed_at', {ascending: false}); document.getElementById('history-list').innerHTML = (data || []).slice(0, 5).map(h => `<div class="flex justify-between items-center text-[10px] bg-white/5 p-3 rounded-lg font-bold italic border border-white/5"><span>Treino ${h.category} - ${new Date(h.completed_at).toLocaleDateString()}</span></div>`).join(''); }
-        async function finishSession() { await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]); alert("Treino batido!"); updateStats(); }
+        async function finishSession() { await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]); alert("Treino Finalizado!"); updateStats(); }
         function changeLetter(l, btn) { currentLetter = l; document.getElementById('finish-label').innerText = l; document.getElementById('label-letter').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); cancelEdit(); loadWorkouts(); }
         function switchView(v) { document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); document.getElementById('nav-workouts').classList.toggle('active-view', v === 'workouts'); document.getElementById('nav-evolution').classList.toggle('active-view', v === 'evolution'); }
+        async function handleSignUp() {
+            const user = document.getElementById('login-user').value.trim().replace('@','');
+            const pass = document.getElementById('login-pass').value;
+            const { error } = await _supabase.auth.signUp({ email: `${user}@sanjafit.com`, password: pass, options: { data: { instagram: `@${user}` } } });
+            if(error) alert(error.message); else alert("Conta Atleta Criada!");
+        }
+        async function deleteEx(id) { if(confirm("Remover exercício?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
     </script>
 </body>
 </html>
