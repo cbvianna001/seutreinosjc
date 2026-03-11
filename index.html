@@ -19,8 +19,6 @@
         .active-tab { background: #3b82f6 !important; border: none !important; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
         .active-view { border-bottom: 3px solid #3b82f6; color: white !important; }
         .trophy-on { opacity: 1 !important; grayscale: 0 !important; filter: drop-shadow(0 0 8px gold); }
-        .loader { border-top-color: #3b82f6; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="text-white min-h-screen pb-10">
@@ -30,7 +28,7 @@
         <div class="glass p-8 rounded-[2rem] w-full max-w-md shadow-2xl">
             <input id="login-user" type="text" placeholder="@seu_instagram ou admsanjafit" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
             <input id="login-pass" type="password" placeholder="Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
-            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg transition-all active:scale-95">Entrar</button>
+            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all">Entrar</button>
             <button onclick="handleSignUp()" class="w-full mt-6 text-[10px] text-gray-500 font-bold uppercase hover:text-white transition-colors">Criar Conta Atleta</button>
         </div>
     </div>
@@ -38,7 +36,7 @@
     <div id="section-app" class="hidden max-w-2xl mx-auto p-4">
         <header class="flex justify-between items-center py-6">
             <div>
-                <h2 id="display-name" class="text-2xl font-black italic uppercase tracking-tighter">@USUARIO</h2>
+                <h2 id="display-name" class="text-2xl font-black italic uppercase tracking-tighter italic">@USUARIO</h2>
                 <p id="badge-admin" class="hidden text-yellow-500 text-[9px] font-black border border-yellow-500/30 px-2 py-0.5 rounded italic">ADMINISTRADOR</p>
             </div>
             <div class="flex gap-2">
@@ -47,22 +45,22 @@
             </div>
         </header>
 
-        <div class="flex border-b border-white/10 mb-8 font-black uppercase text-[10px] tracking-widest text-center">
-            <button onclick="switchView('workouts')" id="nav-workouts" class="flex-1 py-4 active-view text-gray-500">Treinos</button>
-            <button onclick="switchView('evolution')" id="nav-evolution" class="flex-1 py-4 text-gray-500">Evolução</button>
+        <div class="flex border-b border-white/10 mb-8 font-black uppercase text-[10px] tracking-widest text-center text-gray-500">
+            <button onclick="switchView('workouts')" id="nav-workouts" class="flex-1 py-4 active-view">Treinos</button>
+            <button onclick="switchView('evolution')" id="nav-evolution" class="flex-1 py-4">Evolução</button>
         </div>
 
         <div id="view-workouts">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div class="glass p-6 rounded-3xl text-center">
                     <p class="text-[9px] font-black uppercase text-gray-500 mb-2">Meta Mensal (20)</p>
-                    <div class="w-full bg-white/5 rounded-full h-2 mb-2 overflow-hidden"><div id="bar-goal" class="bg-blue-600 h-full w-0 transition-all duration-1000"></div></div>
+                    <div class="w-full bg-white/5 rounded-full h-2 mb-2 overflow-hidden"><div id="bar-goal" class="bg-blue-600 h-full w-0 transition-all"></div></div>
                     <p id="txt-goal" class="text-[10px] font-bold text-blue-400">0/20 Treinos</p>
                 </div>
                 <div class="glass p-6 rounded-3xl flex justify-around items-center">
-                    <span id="t1" class="text-2xl opacity-10 grayscale transition-all">🏆</span>
-                    <span id="t2" class="text-2xl opacity-10 grayscale transition-all">🔥</span>
-                    <span id="t3" class="text-2xl opacity-10 grayscale transition-all">👑</span>
+                    <span id="t1" class="text-2xl opacity-10 grayscale">🏆</span>
+                    <span id="t2" class="text-2xl opacity-10 grayscale">🔥</span>
+                    <span id="t3" class="text-2xl opacity-10 grayscale">👑</span>
                 </div>
             </div>
 
@@ -85,30 +83,19 @@
             </div>
 
             <div class="glass rounded-[2rem] p-6 mb-8 border border-white/5">
-                <h3 class="text-sm font-black italic uppercase mb-4 text-gray-500">Histórico de Sessões</h3>
+                <h3 class="text-sm font-black italic uppercase mb-4 text-gray-500">Histórico Recente</h3>
                 <div id="history-list-aluno" class="space-y-2"></div>
             </div>
         </div>
 
         <div id="view-evolution" class="hidden">
-            <div class="glass p-8 rounded-[2rem] mb-8">
-                <h3 class="text-center font-black uppercase mb-6 italic text-sm">Registrar Shape</h3>
-                <div class="space-y-4">
-                    <input type="file" id="file-photo" accept="image/*" class="text-xs text-gray-500 w-full file:bg-blue-600 file:border-0 file:rounded-full file:text-white file:px-4 file:py-2">
-                    <input type="number" id="input-weight" placeholder="Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none">
-                    <button id="btn-upload" onclick="uploadEvolution()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs flex justify-center items-center gap-2">
-                        <span>Salvar</span>
-                        <div id="spin-upload" class="hidden loader rounded-full border-2 border-white h-4 w-4"></div>
-                    </button>
-                </div>
-            </div>
             <div id="list-gallery" class="grid grid-cols-2 gap-4"></div>
         </div>
     </div>
 
     <div id="modal-admin" class="hidden fixed inset-0 bg-black/98 p-6 z-50 overflow-y-auto">
         <div class="flex justify-between items-center mb-8 max-w-3xl mx-auto border-b border-yellow-600/30 pb-4">
-            <h2 class="text-2xl font-black text-yellow-500 italic uppercase">Gestão SanjaFit</h2>
+            <h2 class="text-2xl font-black text-yellow-500 italic uppercase italic">Gestão SanjaFit</h2>
             <button onclick="closeAdmin()" class="text-white text-4xl">&times;</button>
         </div>
         <div id="admin-content" class="max-w-3xl mx-auto space-y-6"></div>
@@ -122,14 +109,13 @@
         let currentUser = null;
         let currentLetter = 'A';
 
-        // --- LOGIN ---
         async function handleSignIn() {
             const user = document.getElementById('login-user').value.trim();
             const pass = document.getElementById('login-pass').value;
             let loginEmail = (user === 'admsanjafit') ? 'jean@sanjafit.admin' : `${user.replace('@','')}@sanjafit.com`;
 
             const { data, error } = await _supabase.auth.signInWithPassword({ email: loginEmail, password: pass });
-            if(error) return alert("Erro no Login.");
+            if(error) return alert("Erro: " + error.message);
 
             const { data: profile } = await _supabase.from('profiles').select('*').eq('id', data.user.id).single();
             initApp(data.user, (profile?.role === 'admin' || user === 'admsanjafit'), profile?.instagram_handle || user);
@@ -139,7 +125,7 @@
             const user = document.getElementById('login-user').value.trim().replace('@','');
             const pass = document.getElementById('login-pass').value;
             const { error } = await _supabase.auth.signUp({ email: `${user}@sanjafit.com`, password: pass, options: { data: { instagram_handle: `@${user}` } } });
-            if(error) alert(error.message); else alert("Conta Criada!");
+            if(error) alert(error.message); else alert("Conta Criada! Faça Login.");
         }
 
         function initApp(user, isAdmin, handle) {
@@ -153,22 +139,21 @@
             }
             loadWorkouts();
             updateStats();
-            loadGallery();
         }
 
-        // --- TREINOS (ALUNO) ---
         async function loadWorkouts() {
-            const { data } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('category', currentLetter).order('created_at');
-            document.getElementById('list-workouts').innerHTML = data.map(ex => `
+            const { data, error } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('category', currentLetter).order('created_at');
+            if(error) console.error(error);
+            document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
                 <div class="glass p-5 rounded-2xl border border-white/5 flex justify-between items-center">
                     <div>
-                        <h4 class="font-black uppercase text-sm italic tracking-tight">${ex.exercise_name}</h4>
-                        <p class="text-[10px] text-blue-500 font-bold">${ex.weight}kg • ${ex.reps || '3x12'}</p>
+                        <h4 class="font-black uppercase text-sm italic italic tracking-tighter">${ex.exercise_name}</h4>
+                        <p class="text-[10px] text-blue-500 font-bold italic">${ex.weight}kg • ${ex.reps || '3x12'}</p>
                         ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-1 italic border-l border-blue-500 pl-2">Obs: ${ex.notes}</p>` : ''}
                     </div>
-                    <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase">Excluir</button>
+                    <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase italic tracking-tighter">Excluir</button>
                 </div>
-            `).join('') || '<p class="text-center py-5 text-gray-700 text-xs italic italic tracking-widest">Vazio</p>';
+            `).join('') || '<p class="text-center py-5 text-gray-700 text-xs italic">Aba Vazia</p>';
         }
 
         async function addExercisePrompt() {
@@ -177,17 +162,17 @@
             const r = prompt("Séries x Reps:");
             const o = prompt("Observações:");
             if(!n) return;
-            await _supabase.from('workouts').insert([{
+            const { error } = await _supabase.from('workouts').insert([{
                 user_id: currentUser.id, category: currentLetter, exercise_name: n, weight: w, reps: r, notes: o
             }]);
-            loadWorkouts();
+            if(error) alert(error.message); else loadWorkouts();
         }
 
         async function deleteEx(id) { if(confirm("Remover?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
 
         async function finishWorkout() {
             await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]);
-            alert("Treino registrado!");
+            alert("Treino batido!");
             updateStats();
         }
 
@@ -203,41 +188,17 @@
 
             document.getElementById('history-list-aluno').innerHTML = data.slice(0, 5).map(h => `
                 <div class="flex justify-between items-center text-[10px] bg-white/5 p-2 rounded-lg italic font-bold">
-                    <span class="text-blue-500 uppercase">Treino ${h.category}</span>
-                    <span class="text-gray-500 underline underline-offset-4">${new Date(h.completed_at).toLocaleDateString()}</span>
+                    <span class="text-blue-500 uppercase italic tracking-widest">Treino ${h.category}</span>
+                    <span class="text-gray-500">${new Date(h.completed_at).toLocaleDateString()}</span>
                 </div>
-            `).join('') || '<p class="text-[9px] text-gray-600">Nenhum treino concluído este mês.</p>';
-        }
-
-        // --- EVOLUÇÃO (FOTOS) ---
-        async function uploadEvolution() {
-            const file = document.getElementById('file-photo').files[0];
-            const weight = document.getElementById('input-weight').value;
-            if(!file || !weight) return alert("Selecione foto e peso!");
-            document.getElementById('spin-upload').classList.remove('hidden');
-            const name = `${Date.now()}_${file.name}`;
-            await _supabase.storage.from('FORMAS').upload(name, file);
-            const { data: urlData } = _supabase.storage.from('FORMAS').getPublicUrl(name);
-            await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: urlData.publicUrl, body_weight: weight }]);
-            document.getElementById('spin-upload').classList.add('hidden');
-            loadGallery();
-        }
-
-        async function loadGallery() {
-            const { data } = await _supabase.from('evolution_gallery').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false});
-            document.getElementById('list-gallery').innerHTML = data.map(p => `
-                <div class="glass rounded-2xl overflow-hidden border border-white/5 shadow-lg">
-                    <img src="${p.photo_url}" class="w-full h-32 object-cover grayscale hover:grayscale-0 transition-all duration-500">
-                    <div class="p-3 text-[9px] font-black uppercase text-center"><p class="text-blue-500">${new Date(p.created_at).toLocaleDateString()}</p><p>${p.body_weight} KG</p></div>
-                </div>
-            `).join('');
+            `).join('') || '<p class="text-[9px] text-gray-600">Nenhum histórico.</p>';
         }
 
         // --- PORTAL ADMIN ---
         async function openAdmin() {
             document.getElementById('modal-admin').classList.remove('hidden');
-            const { data: profiles, error } = await _supabase.from('profiles').select('*').neq('role', 'admin');
-            if(error) { console.error(error); return alert("Erro ao carregar alunos."); }
+            const { data: profiles, error } = await _supabase.from('profiles').select('*').order('instagram_handle');
+            if(error) return alert("Erro ao carregar alunos: " + error.message);
 
             document.getElementById('admin-content').innerHTML = profiles.map(u => `
                 <div class="glass p-6 rounded-[2rem] border border-white/10 shadow-2xl">
@@ -252,12 +213,12 @@
                             <input id="ex-${u.id}" type="text" placeholder="Exercício" class="bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
                             <input id="w-${u.id}" type="number" placeholder="Peso" class="bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
                             <input id="r-${u.id}" type="text" placeholder="Repetições" class="bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
-                            <input id="n-${u.id}" type="text" placeholder="Observações/Orientações" class="col-span-2 bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
+                            <input id="n-${u.id}" type="text" placeholder="Observações" class="col-span-2 bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
                         </div>
-                        <button onclick="adminAddWorkout('${u.id}')" class="w-full bg-blue-600 p-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all">Salvar Treino</button>
+                        <button onclick="adminAddWorkout('${u.id}')" class="w-full bg-blue-600 p-3 rounded-xl font-black text-xs uppercase transition-all">Salvar Treino</button>
                     </div>
                 </div>
-            `).join('') || '<p class="text-center py-10 text-gray-500 font-black italic">Nenhum aluno cadastrado no sistema.</p>';
+            `).join('') || '<p class="text-center py-10 text-gray-500 font-black italic">Sem alunos encontrados.</p>';
         }
 
         async function adminAddWorkout(id) {
@@ -269,25 +230,14 @@
                 reps: document.getElementById(`r-${id}`).value,
                 notes: document.getElementById(`n-${id}`).value
             };
-            if(!payload.exercise_name) return alert("Nome do exercício é obrigatório!");
+            if(!payload.exercise_name) return alert("Digite o nome!");
             const { error } = await _supabase.from('workouts').insert([payload]);
-            if(error) alert("Erro ao salvar: " + error.message); else alert("Treino salvo com sucesso para o aluno!");
+            if(error) alert(error.message); else alert("Treino salvo!");
         }
 
-        async function deleteUser(id) { if(confirm("Deseja excluir permanentemente este aluno?")) { await _supabase.from('profiles').delete().eq('id', id); openAdmin(); } }
-
-        // AUX
-        function switchView(v) { 
-            document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); 
-            document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); 
-            document.getElementById('nav-workouts').classList.toggle('active-view', v === 'workouts'); 
-            document.getElementById('nav-evolution').classList.toggle('active-view', v === 'evolution'); 
-        }
-        function changeLetter(l, btn) { 
-            currentLetter = l; document.getElementById('current-letter').innerText = l; 
-            document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); 
-            btn.classList.add('active-tab'); loadWorkouts(); 
-        }
+        async function deleteUser(id) { if(confirm("Excluir conta?")) { await _supabase.from('profiles').delete().eq('id', id); openAdmin(); } }
+        function switchView(v) { document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); }
+        function changeLetter(l, btn) { currentLetter = l; document.getElementById('current-letter').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); loadWorkouts(); }
         function closeAdmin() { document.getElementById('modal-admin').classList.add('hidden'); }
     </script>
 </body>
