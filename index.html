@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SanjaFit | Turbo Elite</title>
+    <title>SanjaFit | Professional Evolution</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -19,21 +19,20 @@
         .active-tab { background: #3b82f6 !important; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); border: none !important; }
         .active-view { border-bottom: 3px solid #3b82f6; color: white !important; }
         .trophy-active { opacity: 1 !important; filter: drop-shadow(0 0 8px gold); grayscale: 0 !important; }
-        .loader { border-top-color: #3b82f6; animation: spinner 1.5s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        input::placeholder { color: #64748b; }
     </style>
 </head>
 <body class="text-white min-h-screen pb-20">
 
-    <div id="auth-section" class="flex flex-col items-center justify-center min-h-screen p-6 text-center">
+    <div id="auth-section" class="flex flex-col items-center justify-center min-h-screen p-6">
         <h1 class="text-6xl font-black italic text-blue-500 uppercase mb-2 tracking-tighter">SANJA<span class="text-white">FIT</span></h1>
-        <p class="text-gray-500 text-[10px] tracking-[0.5em] uppercase mb-10 font-bold">São José dos Campos • Brutal Training</p>
+        <p class="text-gray-500 text-[10px] tracking-[0.5em] uppercase mb-10 font-bold">Forge Your Body</p>
         
         <div class="glass p-8 rounded-[2.5rem] w-full max-w-md shadow-2xl">
-            <input id="insta-user" type="text" placeholder="@seu_instagram" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
-            <input id="password" type="password" placeholder="Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
-            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg transition-all active:scale-95">Entrar</button>
-            <button onclick="handleSignUp()" class="w-full mt-6 text-[9px] text-gray-500 uppercase font-bold tracking-widest hover:text-white">Criar Nova Conta</button>
+            <input id="insta-user" type="text" placeholder="@seu_instagram ou admin" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
+            <input id="password" type="password" placeholder="Sua Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
+            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg transition-all">Entrar</button>
+            <button onclick="handleSignUp()" class="w-full mt-6 text-[9px] text-gray-500 uppercase font-bold tracking-widest">Criar Conta</button>
         </div>
     </div>
 
@@ -41,35 +40,32 @@
         <header class="flex justify-between items-center py-8">
             <div>
                 <h2 id="user-display-name" class="text-2xl font-black italic uppercase tracking-tighter">@USUARIO</h2>
-                <p id="role-badge" class="text-blue-500 text-[9px] font-bold uppercase tracking-widest">Atleta SanjaFit</p>
+                <p id="admin-label" class="hidden text-yellow-500 text-[9px] font-black uppercase">System Administrator</p>
             </div>
             <div class="flex gap-2">
-                <button id="admin-btn" onclick="openAdmin()" class="hidden bg-yellow-600/20 text-yellow-500 border border-yellow-600 px-3 py-1 rounded-lg text-[9px] font-black uppercase">Painel Admin</button>
-                <button onclick="logout()" class="glass px-4 py-2 rounded-xl text-[10px] font-bold text-red-400 uppercase tracking-widest">Sair</button>
+                <button id="admin-btn" onclick="openAdmin()" class="hidden glass bg-yellow-600/20 text-yellow-500 border border-yellow-600/50 px-3 py-1 rounded-lg text-[9px] font-black">ADMIN</button>
+                <button onclick="logout()" class="text-red-400 text-[10px] font-black uppercase">Sair</button>
             </div>
         </header>
 
         <div class="flex border-b border-white/10 mb-8 font-black uppercase text-[10px] tracking-widest text-center">
-            <button onclick="showView('workouts')" id="nav-workouts" class="flex-1 py-4 text-gray-500 active-view">Treinos</button>
+            <button onclick="showView('workouts')" id="nav-workouts" class="flex-1 py-4 active-view">Meus Treinos</button>
             <button onclick="showView('evolution')" id="nav-evolution" class="flex-1 py-4 text-gray-500">Evolução</button>
         </div>
 
         <div id="view-workouts">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div class="glass p-6 rounded-3xl">
-                    <p class="text-[10px] font-black uppercase text-gray-500 mb-3 tracking-widest text-center">Meta Mensal (20 Treinos)</p>
+                    <p class="text-[10px] font-black uppercase text-gray-500 mb-3 tracking-widest">Meta do Mês (20)</p>
                     <div class="w-full bg-white/5 rounded-full h-3 mb-2 overflow-hidden">
-                        <div id="goal-bar" class="bg-blue-600 h-full transition-all duration-1000" style="width: 0%"></div>
+                        <div id="goal-bar" class="bg-blue-600 h-full transition-all" style="width: 0%"></div>
                     </div>
-                    <div class="flex justify-between text-[10px] font-bold text-blue-400">
-                        <span id="goal-text">0 / 20</span>
-                        <span id="goal-percent">0%</span>
-                    </div>
+                    <div class="flex justify-between text-[10px] font-bold text-blue-400"><span id="goal-text">0/20</span><span id="goal-percent">0%</span></div>
                 </div>
                 <div class="glass p-6 rounded-3xl flex items-center justify-around">
-                    <div class="text-center"><span id="trophy-1" class="text-3xl opacity-10 grayscale transition-all">🏆</span><p class="text-[7px] uppercase mt-1 text-gray-500 font-black">Bronze</p></div>
-                    <div class="text-center"><span id="trophy-2" class="text-3xl opacity-10 grayscale transition-all">🔥</span><p class="text-[7px] uppercase mt-1 text-gray-500 font-black">Prata</p></div>
-                    <div class="text-center"><span id="trophy-3" class="text-3xl opacity-10 grayscale transition-all">👑</span><p class="text-[7px] uppercase mt-1 text-gray-500 font-black">Ouro</p></div>
+                    <span id="trophy-1" class="text-3xl opacity-10 grayscale transition-all">🏆</span>
+                    <span id="trophy-2" class="text-3xl opacity-10 grayscale transition-all">🔥</span>
+                    <span id="trophy-3" class="text-3xl opacity-10 grayscale transition-all">👑</span>
                 </div>
             </div>
 
@@ -80,47 +76,30 @@
                 <button onclick="changeTab('D', this)" class="tab-btn p-5 rounded-2xl glass font-black text-xl">D</button>
             </div>
 
-            <div class="glass rounded-[2.5rem] p-8 border-t border-white/5 mb-8 shadow-2xl">
-                <div class="flex justify-between items-center mb-8">
-                    <h3 class="text-2xl font-black italic uppercase tracking-tighter italic">Treino <span id="current-tab-label" class="text-blue-500">A</span></h3>
-                    <div class="flex gap-2">
-                        <button onclick="addExercisePrompt()" class="bg-white text-black px-4 py-2 rounded-full text-[9px] font-black uppercase">Add</button>
-                        <button onclick="finishWorkout()" class="bg-green-600 text-white px-4 py-2 rounded-full text-[9px] font-black italic uppercase">Concluir</button>
-                    </div>
+            <div class="glass rounded-[2.5rem] p-6 mb-8 border border-white/10">
+                <h3 class="text-sm font-black italic uppercase mb-4 text-blue-500">Adicionar Novo Exercício ao Treino <span id="current-tab-label">A</span></h3>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <input id="new-ex-name" type="text" placeholder="Nome do Exercício" class="col-span-2 p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
+                    <input id="new-ex-weight" type="number" placeholder="Peso (kg)" class="p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
+                    <input id="new-ex-reps" type="text" placeholder="Séries x Reps" class="p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
+                    <input id="new-ex-notes" type="text" placeholder="Obs: Ex: Cadência lenta" class="col-span-2 p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
                 </div>
-                <div id="exercise-list" class="space-y-4"></div>
+                <button onclick="saveExercise()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-xl font-black uppercase text-xs transition-all">Salvar no Treino</button>
             </div>
+
+            <div id="exercise-list" class="space-y-4 mb-10"></div>
+            
+            <button onclick="finishWorkout()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg shadow-green-900/30">Concluir Treino de Hoje</button>
         </div>
 
         <div id="view-evolution" class="hidden">
-            <div class="glass p-6 rounded-3xl mb-8">
-                <h3 class="text-[10px] font-black uppercase text-blue-500 mb-6 tracking-widest text-center italic">Sessões por Semana</h3>
-                <canvas id="evolutionChart" height="150"></canvas>
-            </div>
-
-            <div class="glass p-8 rounded-[2.5rem] mb-8 shadow-2xl">
-                <h3 class="text-xl font-black italic uppercase mb-6 text-center">Postar Shape</h3>
-                <div class="space-y-4">
-                    <label class="flex items-center justify-center w-full p-4 rounded-xl bg-black/40 border border-dashed border-white/20 cursor-pointer">
-                        <span id="file-label" class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Selecionar Foto</span>
-                        <input type="file" id="photo-file" accept="image/*" class="hidden">
-                    </label>
-                    <input type="number" id="body-weight" placeholder="Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none">
-                    <button id="upload-btn" onclick="uploadPhoto()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-[10px] tracking-widest flex justify-center items-center gap-2">
-                        <span>Salvar Registro</span>
-                        <div id="upload-spinner" class="hidden loader rounded-full border-2 border-white h-4 w-4"></div>
-                    </button>
-                </div>
-            </div>
+            <div class="glass p-6 rounded-3xl mb-8"><canvas id="evolutionChart" height="150"></canvas></div>
             <div id="photo-gallery" class="grid grid-cols-2 gap-4"></div>
         </div>
     </div>
 
     <div id="admin-panel" class="hidden fixed inset-0 bg-black/98 p-8 z-50 overflow-y-auto">
-        <div class="flex justify-between items-center mb-10 max-w-xl mx-auto">
-            <h2 class="text-3xl font-black text-yellow-500 italic uppercase">Gestão SanjaFit</h2>
-            <button onclick="closeAdmin()" class="text-white text-4xl">&times;</button>
-        </div>
+        <div class="flex justify-between items-center mb-10 max-w-xl mx-auto"><h2 class="text-3xl font-black text-yellow-500 uppercase italic">Admin Panel</h2><button onclick="closeAdmin()" class="text-white text-4xl">&times;</button></div>
         <div id="admin-user-list" class="space-y-4 max-w-xl mx-auto"></div>
     </div>
 
@@ -132,27 +111,30 @@
         let currentTab = 'A';
         let myChart;
 
-        document.getElementById('photo-file')?.addEventListener('change', e => {
-            document.getElementById('file-label').innerText = e.target.files[0]?.name || "Selecionar Foto";
-        });
-
         async function handleSignIn() {
-            const userF = document.getElementById('insta-user').value.trim().replace('@', '');
+            const userF = document.getElementById('insta-user').value.trim();
             const passF = document.getElementById('password').value;
-            const { data, error } = await _supabase.auth.signInWithPassword({ email: `${userF}@sanjafit.com`, password: passF });
-            if (error) return alert("Erro no Login. Verifique suas credenciais.");
-            
+
+            // Login Admin Fixo
+            if(userF === 'admsanjafit' && passF === 'Lecv221018') {
+                const { data } = await _supabase.auth.signInWithPassword({ email: 'jean@sanjafit.admin', password: passF });
+                initApp(data.user, { role: 'admin' });
+                return;
+            }
+
+            const { data, error } = await _supabase.auth.signInWithPassword({ 
+                email: `${userF.replace('@','')}@sanjafit.com`, password: passF 
+            });
+            if (error) return alert("Erro no Login.");
             const { data: profile } = await _supabase.from('profiles').select('*').eq('id', data.user.id).single();
             initApp(data.user, profile);
         }
 
         async function handleSignUp() {
-            const userF = document.getElementById('insta-user').value.trim().replace('@', '');
+            const userF = document.getElementById('insta-user').value.trim().replace('@','');
             const passF = document.getElementById('password').value;
             const { error } = await _supabase.auth.signUp({ 
-                email: `${userF}@sanjafit.com`, 
-                password: passF, 
-                options: { data: { instagram: `@${userF}` } } 
+                email: `${userF}@sanjafit.com`, password: passF, options: { data: { instagram: `@${userF}` } } 
             });
             if (error) alert(error.message); else alert("Conta Criada! Faça Login.");
         }
@@ -160,105 +142,82 @@
         function initApp(user, profile) {
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('app-section').classList.remove('hidden');
-            document.getElementById('user-display-name').innerText = user.user_metadata.instagram;
-            
+            document.getElementById('user-display-name').innerText = user.user_metadata.instagram || "Admin";
             if(profile?.role === 'admin') {
                 document.getElementById('admin-btn').classList.remove('hidden');
-                document.getElementById('role-badge').innerText = "System Admin";
-                document.getElementById('role-badge').classList.replace('text-blue-500', 'text-yellow-500');
+                document.getElementById('admin-label').classList.remove('hidden');
             }
-
             loadExercises();
             updateStats();
-            loadGallery();
+        }
+
+        async function saveExercise() {
+            const name = document.getElementById('new-ex-name').value;
+            const weight = document.getElementById('new-ex-weight').value;
+            const reps = document.getElementById('new-ex-reps').value;
+            const notes = document.getElementById('new-ex-notes').value;
+
+            if(!name) return alert("Digite o nome do exercício!");
+
+            const { data: { user } } = await _supabase.auth.getUser();
+            
+            const { error } = await _supabase.from('workouts').insert([{
+                user_id: user.id,
+                category: currentTab,
+                exercise_name: name,
+                weight: weight,
+                reps: reps,
+                notes: notes
+            }]);
+
+            if (error) {
+                console.error(error);
+                alert("Erro ao salvar: " + error.message);
+            } else {
+                // Limpa campos e recarrega
+                document.getElementById('new-ex-name').value = '';
+                document.getElementById('new-ex-weight').value = '';
+                document.getElementById('new-ex-reps').value = '';
+                document.getElementById('new-ex-notes').value = '';
+                loadExercises();
+            }
+        }
+
+        async function loadExercises() {
+            const { data } = await _supabase.from('workouts').select('*').eq('category', currentTab).order('created_at', {ascending: true});
+            document.getElementById('exercise-list').innerHTML = data.map(ex => `
+                <div class="glass p-6 rounded-3xl border border-white/5 relative group">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-black text-white uppercase text-sm italic tracking-tighter">${ex.exercise_name}</h4>
+                        <button onclick="deleteEx('${ex.id}')" class="text-gray-600 hover:text-red-500">&times;</button>
+                    </div>
+                    <div class="flex gap-4 text-[10px] font-bold uppercase text-blue-500">
+                        <span>${ex.weight || 0} KG</span>
+                        <span>${ex.reps || '3x12'}</span>
+                    </div>
+                    ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-2 italic font-light">${ex.notes}</p>` : ''}
+                </div>
+            `).join('') || '<p class="text-center py-10 text-gray-700 text-xs italic">Aba Vazia</p>';
+        }
+
+        async function finishWorkout() {
+            if(!confirm("Treino finalizado?")) return;
+            const { data: { user } } = await _supabase.auth.getUser();
+            await _supabase.from('workout_history').insert([{ user_id: user.id, category: currentTab }]);
+            alert("Boa! Mais um pra conta.");
+            updateStats();
         }
 
         async function updateStats() {
             const { data: history } = await _supabase.from('workout_history').select('*');
             const count = history ? history.length : 0;
             const percent = Math.min((count / 20) * 100, 100);
-            
             document.getElementById('goal-bar').style.width = percent + '%';
-            document.getElementById('goal-text').innerText = `${count} / 20 Treinos`;
+            document.getElementById('goal-text').innerText = `${count}/20`;
             document.getElementById('goal-percent').innerText = Math.floor(percent) + '%';
-
             if(count >= 1) document.getElementById('trophy-1').classList.add('trophy-active');
             if(count >= 10) document.getElementById('trophy-2').classList.add('trophy-active');
             if(count >= 20) document.getElementById('trophy-3').classList.add('trophy-active');
-
-            renderChart(history);
-        }
-
-        function renderChart(history) {
-            const counts = [0, 0, 0, 0];
-            history.forEach(h => {
-                const day = new Date(h.completed_at).getDate();
-                if(day <= 7) counts[0]++; else if(day <= 14) counts[1]++; else if(day <= 21) counts[2]++; else counts[3]++;
-            });
-            const ctx = document.getElementById('evolutionChart').getContext('2d');
-            if(myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-                    datasets: [{ data: counts, borderColor: '#3b82f6', tension: 0.4, fill: true, backgroundColor: 'rgba(59,130,246,0.1)' }]
-                },
-                options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#222' } } } }
-            });
-        }
-
-        async function uploadPhoto() {
-            const fileInput = document.getElementById('photo-file');
-            const weight = document.getElementById('body-weight').value;
-            const btn = document.getElementById('upload-btn');
-            const spinner = document.getElementById('upload-spinner');
-
-            if (!fileInput.files[0] || !weight) return alert("Selecione a foto e o peso.");
-
-            btn.disabled = true; spinner.classList.remove('hidden');
-            const file = fileInput.files[0];
-            const fileName = `${Date.now()}.${file.name.split('.').pop()}`;
-
-            const { error: uploadError } = await _supabase.storage.from('FORMAS').upload(fileName, file);
-            if (uploadError) { alert(uploadError.message); btn.disabled = false; return; }
-
-            const { data: urlData } = _supabase.storage.from('FORMAS').getPublicUrl(fileName);
-            const { data: { user } } = await _supabase.auth.getUser();
-
-            await _supabase.from('evolution_gallery').insert([{ user_id: user.id, photo_url: urlData.publicUrl, body_weight: weight }]);
-            
-            alert("Shape salvo!");
-            btn.disabled = false; spinner.classList.add('hidden');
-            loadGallery();
-        }
-
-        async function loadGallery() {
-            const { data } = await _supabase.from('evolution_gallery').select('*').order('created_at', {ascending: false});
-            document.getElementById('photo-gallery').innerHTML = data.map(p => `
-                <div class="bg-black/40 rounded-3xl overflow-hidden border border-white/5">
-                    <img src="${p.photo_url}" class="w-full h-40 object-cover grayscale hover:grayscale-0 transition-all">
-                    <div class="p-4 text-[9px] font-black uppercase">
-                        <p class="text-blue-500">${new Date(p.created_at).toLocaleDateString()}</p>
-                        <p class="text-white">${p.body_weight} KG</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function loadExercises() {
-            const { data } = await _supabase.from('workouts').select('*').eq('category', currentTab).order('created_at', {ascending: true});
-            document.getElementById('exercise-list').innerHTML = data.map(ex => `
-                <div class="bg-white/5 p-6 rounded-3xl flex justify-between items-center border border-white/5">
-                    <div><h4 class="font-black text-white uppercase text-sm italic tracking-tighter">${ex.exercise_name}</h4><p class="text-[9px] text-blue-500 font-bold uppercase tracking-widest">${ex.weight}kg • 3x12</p></div>
-                    <button onclick="deleteEx('${ex.id}')" class="text-gray-700 hover:text-red-500 text-xl">&times;</button>
-                </div>
-            `).join('') || '<p class="text-center py-10 text-gray-700 text-[10px] uppercase font-black">Sem exercícios.</p>';
-        }
-
-        async function finishWorkout() {
-            const { data: { user } } = await _supabase.auth.getUser();
-            await _supabase.from('workout_history').insert([{ user_id: user.id, category: currentTab }]);
-            alert("Treino batido!"); updateStats();
         }
 
         async function openAdmin() {
@@ -266,31 +225,20 @@
             const { data } = await _supabase.from('profiles').select('*');
             document.getElementById('admin-user-list').innerHTML = data.map(u => `
                 <div class="glass p-6 rounded-3xl flex justify-between items-center border border-white/5">
-                    <div><p class="font-black text-blue-400 uppercase tracking-tighter underline">${u.instagram || 'Atleta'}</p><p class="text-[8px] text-gray-500">${u.role || 'user'}</p></div>
-                    <button onclick="toggleBan('${u.id}', ${u.is_banned})" class="${u.is_banned ? 'text-green-500' : 'text-red-500'} font-black text-[9px] uppercase tracking-widest border border-white/5 px-4 py-2 rounded-xl">
+                    <p class="font-black italic text-blue-400 uppercase tracking-tighter underline">${u.instagram || 'User'}</p>
+                    <button onclick="toggleBan('${u.id}', ${u.is_banned})" class="${u.is_banned ? 'text-green-500' : 'text-red-500'} font-black text-[10px] uppercase">
                         ${u.is_banned ? '[Ativar]' : '[Banir]'}
                     </button>
                 </div>
             `).join('');
         }
 
+        function showView(v) { document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); }
         async function deleteEx(id) { await _supabase.from('workouts').delete().eq('id', id); loadExercises(); }
-        async function addExercisePrompt() {
-            const n = prompt("Exercício:"); const w = prompt("Carga:"); if(!n) return;
-            const { data: { user } } = await _supabase.auth.getUser();
-            await _supabase.from('workouts').insert([{ user_id: user.id, category: currentTab, exercise_name: n, weight: w }]);
-            loadExercises();
-        }
-        function showView(view) {
-            document.getElementById('view-workouts').classList.toggle('hidden', view !== 'workouts');
-            document.getElementById('view-evolution').classList.toggle('hidden', view !== 'evolution');
-            document.getElementById('nav-workouts').classList.toggle('active-view', view === 'workouts');
-            document.getElementById('nav-evolution').classList.toggle('active-view', view === 'evolution');
-        }
-        function toggleBan(id, st) { _supabase.from('profiles').update({ is_banned: !st }).eq('id', id).then(() => openAdmin()); }
         function changeTab(tab, btn) { currentTab = tab; document.getElementById('current-tab-label').innerText = tab; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); loadExercises(); }
         function logout() { window.location.reload(); }
         function closeAdmin() { document.getElementById('admin-panel').classList.add('hidden'); }
+        function toggleBan(id, st) { _supabase.from('profiles').update({ is_banned: !st }).eq('id', id).then(() => openAdmin()); }
     </script>
 </body>
 </html>
