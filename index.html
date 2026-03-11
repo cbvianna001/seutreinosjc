@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SanjaFit | Elite Professional</title>
+    <title>SanjaFit | Meu Treino</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,13 +12,13 @@
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.95)), 
-                        url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2070&auto=format&fit=crop');
+                        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
             background-size: cover; background-position: center; background-attachment: fixed;
         }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .active-tab { background: #3b82f6 !important; border: none !important; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
         .active-view { border-bottom: 3px solid #3b82f6; color: white !important; }
-        .trophy-on { opacity: 1 !important; grayscale: 0 !important; filter: drop-shadow(0 0 10px gold); }
+        .trophy-on { opacity: 1 !important; grayscale: 0 !important; filter: drop-shadow(0 0 8px gold); }
     </style>
 </head>
 <body class="text-white min-h-screen pb-10">
@@ -26,36 +26,30 @@
     <div id="section-login" class="flex flex-col items-center justify-center min-h-screen p-6 text-center">
         <h1 class="text-5xl font-black italic text-blue-500 uppercase mb-8 tracking-tighter">SANJA<span class="text-white">FIT</span></h1>
         <div class="glass p-8 rounded-[2rem] w-full max-w-md shadow-2xl">
-            <input id="login-user" type="text" placeholder="@seu_instagram ou admsanjafit" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
+            <input id="login-user" type="text" placeholder="@seu_instagram" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
             <input id="login-pass" type="password" placeholder="Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
-            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg transition-all active:scale-95">Acessar Sistema</button>
-            <button onclick="handleSignUp()" class="w-full mt-6 text-[10px] text-gray-500 font-bold uppercase hover:text-white">Registrar Novo Aluno</button>
+            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg transition-all active:scale-95">Entrar no Treino</button>
+            <button onclick="handleSignUp()" class="w-full mt-6 text-[10px] text-gray-400 font-bold uppercase hover:text-white">Criar Conta</button>
         </div>
     </div>
 
     <div id="section-app" class="hidden max-w-2xl mx-auto p-4">
         <header class="flex justify-between items-center py-6">
-            <div>
-                <h2 id="display-name" class="text-2xl font-black italic uppercase tracking-tighter italic">@USUARIO</h2>
-                <p id="badge-admin" class="hidden text-yellow-500 text-[9px] font-black border border-yellow-500/30 px-2 py-0.5 rounded italic">TREINADOR MASTER</p>
-            </div>
-            <div class="flex gap-2">
-                <button id="btn-admin-panel" onclick="openAdmin()" class="hidden glass bg-yellow-600/20 text-yellow-500 px-4 py-2 rounded-xl text-[9px] font-black italic uppercase">Gestão Alunos</button>
-                <button onclick="location.reload()" class="text-red-400 text-[10px] font-black uppercase border border-red-900/30 px-4 py-2 rounded-xl">Sair</button>
-            </div>
+            <h2 id="display-name" class="text-2xl font-black italic uppercase tracking-tighter italic text-blue-500">@USUARIO</h2>
+            <button onclick="location.reload()" class="text-red-400 text-[10px] font-black uppercase border border-red-900/30 px-4 py-2 rounded-xl">Sair</button>
         </header>
 
         <div class="flex border-b border-white/10 mb-8 font-black uppercase text-[10px] tracking-widest text-center text-gray-500">
-            <button onclick="switchView('workouts')" id="nav-workouts" class="flex-1 py-4 active-view">Treinos</button>
+            <button onclick="switchView('workouts')" id="nav-workouts" class="flex-1 py-4 active-view">Meus Treinos</button>
             <button onclick="switchView('evolution')" id="nav-evolution" class="flex-1 py-4">Evolução</button>
         </div>
 
         <div id="view-workouts">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div class="glass p-6 rounded-3xl text-center">
-                    <p class="text-[9px] font-black uppercase text-gray-500 mb-2 italic">Progresso Mensal</p>
+                    <p class="text-[9px] font-black uppercase text-gray-500 mb-2 italic">Meta de Treinos</p>
                     <div class="w-full bg-white/5 rounded-full h-2 mb-2 overflow-hidden"><div id="bar-goal" class="bg-blue-600 h-full w-0 transition-all duration-1000"></div></div>
-                    <p id="txt-goal" class="text-[10px] font-bold text-blue-400 italic">0/20 Sessões</p>
+                    <p id="txt-goal" class="text-[10px] font-bold text-blue-400">0/20 Sessões</p>
                 </div>
                 <div class="glass p-6 rounded-3xl flex justify-around items-center">
                     <span id="t1" class="text-2xl opacity-10 grayscale transition-all">🏆</span>
@@ -71,35 +65,35 @@
                 <button onclick="changeLetter('D', this)" class="letter-btn p-4 rounded-xl glass font-black">D</button>
             </div>
 
-            <div class="glass rounded-[2rem] p-6 mb-8 border border-white/5 shadow-2xl">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-black italic uppercase">Treino <span id="current-letter" class="text-blue-500">A</span></h3>
-                    <div class="flex gap-2">
-                        <button onclick="addExercisePrompt()" class="bg-blue-600 px-4 py-2 rounded-full text-[9px] font-black uppercase">+ Add</button>
-                        <button onclick="finishWorkout()" class="bg-green-600 px-4 py-2 rounded-full text-[9px] font-black uppercase italic">Concluir</button>
-                    </div>
+            <div class="glass p-6 rounded-[2rem] mb-8 border border-white/5">
+                <h3 class="text-xs font-black uppercase mb-4 text-blue-500 italic">Novo Exercício no Treino <span id="label-letter">A</span></h3>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <input id="in-name" type="text" placeholder="Nome" class="col-span-2 p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs">
+                    <input id="in-weight" type="text" placeholder="Peso (kg)" class="p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs">
+                    <input id="in-reps" type="text" placeholder="Séries x Reps" class="p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs">
+                    <input id="in-notes" type="text" placeholder="Observações" class="col-span-2 p-3 rounded-xl bg-black/40 border border-white/10 outline-none text-xs">
                 </div>
-                <div id="list-workouts" class="space-y-4"></div>
+                <button onclick="saveWorkout()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs tracking-widest">Adicionar ao Treino</button>
             </div>
 
-            <div class="glass rounded-[2rem] p-6 border border-white/5 shadow-2xl">
-                <h3 class="text-sm font-black italic uppercase mb-4 text-gray-500 italic">Histórico de Sessões</h3>
-                <div id="history-list-aluno" class="space-y-2"></div>
+            <div id="list-workouts" class="space-y-4 mb-8"></div>
+            
+            <button onclick="finishSession()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg shadow-green-900/20">Finalizar Treino de Hoje</button>
+            
+            <div class="mt-8 border-t border-white/10 pt-8">
+                <h3 class="text-xs font-black uppercase mb-4 text-gray-500 italic">Histórico Recente</h3>
+                <div id="history-list" class="space-y-2"></div>
             </div>
         </div>
 
         <div id="view-evolution" class="hidden">
-            <div class="glass p-6 rounded-3xl mb-8"><canvas id="evolutionChart" height="150"></canvas></div>
+            <div class="glass p-8 rounded-[2rem] mb-8">
+                <h3 class="text-center font-black uppercase mb-6 italic text-xs">Fotos de Evolução</h3>
+                <input type="file" id="file-photo" class="text-xs text-gray-400 mb-4 block w-full">
+                <button onclick="uploadPhoto()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs">Subir Foto</button>
+            </div>
             <div id="list-gallery" class="grid grid-cols-2 gap-4"></div>
         </div>
-    </div>
-
-    <div id="modal-admin" class="hidden fixed inset-0 bg-black/98 p-6 z-50 overflow-y-auto">
-        <div class="flex justify-between items-center mb-8 max-w-3xl mx-auto border-b border-yellow-600/30 pb-4">
-            <h2 class="text-2xl font-black text-yellow-500 italic uppercase italic">Central de Alunos SanjaFit</h2>
-            <button onclick="closeAdmin()" class="text-white text-4xl">&times;</button>
-        </div>
-        <div id="admin-content" class="max-w-3xl mx-auto space-y-6"></div>
     </div>
 
     <script>
@@ -111,35 +105,54 @@
         let currentLetter = 'A';
 
         async function handleSignIn() {
-            const user = document.getElementById('login-user').value.trim();
+            const user = document.getElementById('login-user').value.trim().replace('@','');
             const pass = document.getElementById('login-pass').value;
-            let loginEmail = (user === 'admsanjafit') ? 'jean@sanjafit.admin' : `${user.replace('@','')}@sanjafit.com`;
-
-            const { data, error } = await _supabase.auth.signInWithPassword({ email: loginEmail, password: pass });
-            if(error) return alert("Erro de Acesso.");
-
-            const { data: profile } = await _supabase.from('profiles').select('*').eq('id', data.user.id).single();
-            initApp(data.user, (profile?.role === 'admin' || user === 'admsanjafit'), profile?.instagram_handle || user);
+            const { data, error } = await _supabase.auth.signInWithPassword({ email: `${user}@sanjafit.com`, password: pass });
+            if(error) return alert("Erro no Login.");
+            initApp(data.user);
         }
 
         async function handleSignUp() {
             const user = document.getElementById('login-user').value.trim().replace('@','');
             const pass = document.getElementById('login-pass').value;
-            const { error } = await _supabase.auth.signUp({ email: `${user}@sanjafit.com`, password: pass, options: { data: { instagram_handle: `@${user}` } } });
-            if(error) alert(error.message); else alert("Conta Atleta Criada!");
+            const { error } = await _supabase.auth.signUp({ email: `${user}@sanjafit.com`, password: pass, options: { data: { instagram: `@${user}` } } });
+            if(error) alert(error.message); else alert("Sucesso! Logue agora.");
         }
 
-        function initApp(user, isAdmin, handle) {
+        function initApp(user) {
             currentUser = user;
             document.getElementById('section-login').classList.add('hidden');
             document.getElementById('section-app').classList.remove('hidden');
-            document.getElementById('display-name').innerText = handle;
-            if(isAdmin) {
-                document.getElementById('btn-admin-panel').classList.remove('hidden');
-                document.getElementById('badge-admin').classList.remove('hidden');
-            }
+            document.getElementById('display-name').innerText = user.user_metadata.instagram || "@Atleta";
             loadWorkouts();
             updateStats();
+        }
+
+        async function saveWorkout() {
+            const name = document.getElementById('in-name').value;
+            const weight = document.getElementById('in-weight').value;
+            const reps = document.getElementById('in-reps').value;
+            const notes = document.getElementById('in-notes').value;
+
+            if(!name) return alert("Digite o nome do exercício!");
+
+            const { error } = await _supabase.from('workouts').insert([{
+                user_id: currentUser.id,
+                category: currentLetter,
+                exercise_name: name,
+                weight: weight,
+                reps: reps,
+                notes: notes
+            }]);
+
+            if(error) alert(error.message);
+            else {
+                document.getElementById('in-name').value = '';
+                document.getElementById('in-weight').value = '';
+                document.getElementById('in-reps').value = '';
+                document.getElementById('in-notes').value = '';
+                loadWorkouts();
+            }
         }
 
         async function loadWorkouts() {
@@ -147,28 +160,19 @@
             document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
                 <div class="glass p-5 rounded-2xl border border-white/5 flex justify-between items-center">
                     <div>
-                        <h4 class="font-black uppercase text-sm italic italic tracking-tight italic tracking-tighter">${ex.exercise_name}</h4>
-                        <p class="text-[10px] text-blue-500 font-bold italic">${ex.weight}kg • ${ex.reps || '3x12'}</p>
-                        ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-1 italic border-l border-blue-500 pl-2">Obs: ${ex.notes}</p>` : ''}
+                        <h4 class="font-black uppercase text-sm italic tracking-tighter">${ex.exercise_name}</h4>
+                        <p class="text-[10px] text-blue-500 font-bold mt-1">${ex.weight}kg • ${ex.reps || '3x12'}</p>
+                        ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-2 italic border-l border-blue-500 pl-2">Obs: ${ex.notes}</p>` : ''}
                     </div>
-                    <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase italic italic tracking-tighter">Deletar</button>
+                    <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase">Excluir</button>
                 </div>
             `).join('') || '<p class="text-center py-5 text-gray-700 text-xs italic">Aba Vazia</p>';
         }
 
-        async function addExercisePrompt() {
-            const n = prompt("Exercício:"); const w = prompt("Peso (kg):");
-            const r = prompt("Séries x Reps:"); const o = prompt("Dicas/Obs:");
-            if(!n) return;
-            await _supabase.from('workouts').insert([{ user_id: currentUser.id, category: currentLetter, exercise_name: n, weight: w, reps: r, notes: o }]);
-            loadWorkouts();
-        }
-
-        async function deleteEx(id) { if(confirm("Remover?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
-
-        async function finishWorkout() {
+        async function finishSession() {
             await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]);
-            alert("Treino batido!"); updateStats();
+            alert("Treino batido!");
+            updateStats();
         }
 
         async function updateStats() {
@@ -181,61 +185,17 @@
             if(count >= 10) document.getElementById('t2').classList.add('trophy-on');
             if(count >= 20) document.getElementById('t3').classList.add('trophy-on');
 
-            document.getElementById('history-list-aluno').innerHTML = data.slice(0, 5).map(h => `
+            document.getElementById('history-list').innerHTML = data.slice(0, 5).map(h => `
                 <div class="flex justify-between items-center text-[10px] bg-white/5 p-2 rounded-lg italic font-bold">
-                    <span class="text-blue-500 uppercase italic tracking-widest">Sessão ${h.category}</span>
+                    <span class="text-blue-500 uppercase">Sessão ${h.category}</span>
                     <span class="text-gray-500">${new Date(h.completed_at).toLocaleDateString()}</span>
-                </div>
-            `).join('') || '<p class="text-[9px] text-gray-600">Sem histórico.</p>';
-        }
-
-        // --- PORTAL ADMIN ---
-        async function openAdmin() {
-            document.getElementById('modal-admin').classList.remove('hidden');
-            // BUSCA GLOBAL DE PERFIS (POLÍTICA RLS NO SUPABASE PRECISA ESTAR OFF)
-            const { data: profiles, error } = await _supabase.from('profiles').select('*');
-            
-            if(error) return alert("Erro ao carregar lista. Verifique o SQL Editor.");
-
-            document.getElementById('admin-content').innerHTML = profiles.map(u => `
-                <div class="glass p-6 rounded-[2rem] border border-white/10 shadow-2xl">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-black text-blue-400 uppercase italic underline decoration-blue-500/30 underline-offset-8">${u.instagram_handle || '@Aluno'}</h3>
-                        <button onclick="deleteUser('${u.id}')" class="text-red-500 text-[10px] font-black uppercase">Excluir Aluno</button>
-                    </div>
-                    <div class="bg-black/40 p-5 rounded-2xl space-y-4">
-                        <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest italic">Prescrever Novo:</p>
-                        <div class="grid grid-cols-2 gap-2">
-                            <select id="cat-${u.id}" class="bg-gray-900 text-xs p-3 rounded-xl border border-white/5 text-white"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
-                            <input id="ex-${u.id}" type="text" placeholder="Nome Ex." class="bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
-                            <input id="w-${u.id}" type="number" placeholder="Peso" class="bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
-                            <input id="r-${u.id}" type="text" placeholder="Reps" class="bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
-                            <input id="n-${u.id}" type="text" placeholder="Observações" class="col-span-2 bg-gray-900 text-xs p-3 rounded-xl border border-white/5">
-                        </div>
-                        <button onclick="adminAddWorkout('${u.id}')" class="w-full bg-blue-600 p-3 rounded-xl font-black text-xs uppercase italic transition-all active:scale-95">Salvar para Aluno</button>
-                    </div>
                 </div>
             `).join('');
         }
 
-        async function adminAddWorkout(id) {
-            const payload = {
-                user_id: id,
-                category: document.getElementById(`cat-${id}`).value,
-                exercise_name: document.getElementById(`ex-${id}`).value,
-                weight: document.getElementById(`w-${id}`).value,
-                reps: document.getElementById(`r-${id}`).value,
-                notes: document.getElementById(`n-${id}`).value
-            };
-            if(!payload.exercise_name) return alert("Digite o nome do exercício!");
-            const { error } = await _supabase.from('workouts').insert([payload]);
-            if(error) alert(error.message); else alert("Treino salvo com sucesso!");
-        }
-
-        async function deleteUser(id) { if(confirm("Deseja apagar este aluno?")) { await _supabase.from('profiles').delete().eq('id', id); openAdmin(); } }
+        async function deleteEx(id) { if(confirm("Remover?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
         function switchView(v) { document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); }
-        function changeLetter(l, btn) { currentLetter = l; document.getElementById('current-letter').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); loadWorkouts(); }
-        function closeAdmin() { document.getElementById('modal-admin').classList.add('hidden'); }
+        function changeLetter(l, btn) { currentLetter = l; document.getElementById('label-letter').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); loadWorkouts(); }
     </script>
 </body>
 </html>
