@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SanjaFit | Professional Evolution</title>
+    <title>SanjaFit | Professional Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,7 +18,6 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .active-tab { background: #3b82f6 !important; box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); border: none !important; }
         .active-view { border-bottom: 3px solid #3b82f6; color: white !important; }
-        .trophy-active { opacity: 1 !important; filter: drop-shadow(0 0 8px gold); grayscale: 0 !important; }
         input::placeholder { color: #64748b; }
     </style>
 </head>
@@ -26,50 +25,25 @@
 
     <div id="auth-section" class="flex flex-col items-center justify-center min-h-screen p-6">
         <h1 class="text-6xl font-black italic text-blue-500 uppercase mb-2 tracking-tighter">SANJA<span class="text-white">FIT</span></h1>
-        <p class="text-gray-500 text-[10px] tracking-[0.5em] uppercase mb-10 font-bold">Forge Your Body</p>
-        
         <div class="glass p-8 rounded-[2.5rem] w-full max-w-md shadow-2xl">
-            <input id="insta-user" type="text" placeholder="@seu_instagram ou admin" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
+            <input id="insta-user" type="text" placeholder="@seu_instagram ou admsanjafit" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
             <input id="password" type="password" placeholder="Sua Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
-            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg transition-all">Entrar</button>
-            <button onclick="handleSignUp()" class="w-full mt-6 text-[9px] text-gray-500 uppercase font-bold tracking-widest">Criar Conta</button>
+            <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg">Entrar</button>
+            <button onclick="handleSignUp()" class="w-full mt-6 text-[9px] text-gray-500 uppercase font-bold tracking-widest">Criar Conta Atleta</button>
         </div>
     </div>
 
     <div id="app-section" class="hidden max-w-2xl mx-auto p-4">
         <header class="flex justify-between items-center py-8">
-            <div>
-                <h2 id="user-display-name" class="text-2xl font-black italic uppercase tracking-tighter">@USUARIO</h2>
-                <p id="admin-label" class="hidden text-yellow-500 text-[9px] font-black uppercase">System Administrator</p>
-            </div>
+            <h2 id="user-display-name" class="text-2xl font-black italic uppercase tracking-tighter">@USUARIO</h2>
             <div class="flex gap-2">
-                <button id="admin-btn" onclick="openAdmin()" class="hidden glass bg-yellow-600/20 text-yellow-500 border border-yellow-600/50 px-3 py-1 rounded-lg text-[9px] font-black">ADMIN</button>
+                <button id="admin-btn" onclick="openAdmin()" class="hidden glass bg-yellow-600/20 text-yellow-500 border border-yellow-600/50 px-3 py-1 rounded-lg text-[9px] font-black italic">GERENCIAR ALUNOS</button>
                 <button onclick="logout()" class="text-red-400 text-[10px] font-black uppercase">Sair</button>
             </div>
         </header>
 
-        <div class="flex border-b border-white/10 mb-8 font-black uppercase text-[10px] tracking-widest text-center">
-            <button onclick="showView('workouts')" id="nav-workouts" class="flex-1 py-4 active-view">Meus Treinos</button>
-            <button onclick="showView('evolution')" id="nav-evolution" class="flex-1 py-4 text-gray-500">Evolução</button>
-        </div>
-
-        <div id="view-workouts">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div class="glass p-6 rounded-3xl">
-                    <p class="text-[10px] font-black uppercase text-gray-500 mb-3 tracking-widest">Meta do Mês (20)</p>
-                    <div class="w-full bg-white/5 rounded-full h-3 mb-2 overflow-hidden">
-                        <div id="goal-bar" class="bg-blue-600 h-full transition-all" style="width: 0%"></div>
-                    </div>
-                    <div class="flex justify-between text-[10px] font-bold text-blue-400"><span id="goal-text">0/20</span><span id="goal-percent">0%</span></div>
-                </div>
-                <div class="glass p-6 rounded-3xl flex items-center justify-around">
-                    <span id="trophy-1" class="text-3xl opacity-10 grayscale transition-all">🏆</span>
-                    <span id="trophy-2" class="text-3xl opacity-10 grayscale transition-all">🔥</span>
-                    <span id="trophy-3" class="text-3xl opacity-10 grayscale transition-all">👑</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-4 gap-3 mb-8">
+        <div id="user-view">
+             <div class="grid grid-cols-4 gap-3 mb-8">
                 <button onclick="changeTab('A', this)" class="tab-btn p-5 rounded-2xl glass font-black text-xl active-tab">A</button>
                 <button onclick="changeTab('B', this)" class="tab-btn p-5 rounded-2xl glass font-black text-xl">B</button>
                 <button onclick="changeTab('C', this)" class="tab-btn p-5 rounded-2xl glass font-black text-xl">C</button>
@@ -77,30 +51,20 @@
             </div>
 
             <div class="glass rounded-[2.5rem] p-6 mb-8 border border-white/10">
-                <h3 class="text-sm font-black italic uppercase mb-4 text-blue-500">Adicionar Novo Exercício ao Treino <span id="current-tab-label">A</span></h3>
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <input id="new-ex-name" type="text" placeholder="Nome do Exercício" class="col-span-2 p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
-                    <input id="new-ex-weight" type="number" placeholder="Peso (kg)" class="p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
-                    <input id="new-ex-reps" type="text" placeholder="Séries x Reps" class="p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
-                    <input id="new-ex-notes" type="text" placeholder="Obs: Ex: Cadência lenta" class="col-span-2 p-4 rounded-xl bg-black/40 border border-white/5 outline-none text-sm">
-                </div>
-                <button onclick="saveExercise()" class="w-full bg-blue-600 hover:bg-blue-500 p-4 rounded-xl font-black uppercase text-xs transition-all">Salvar no Treino</button>
+                <h3 class="text-xs font-black uppercase mb-4 text-blue-500 italic">Treino <span id="current-tab-label">A</span></h3>
+                <div id="exercise-list" class="space-y-4"></div>
             </div>
-
-            <div id="exercise-list" class="space-y-4 mb-10"></div>
-            
-            <button onclick="finishWorkout()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg shadow-green-900/30">Concluir Treino de Hoje</button>
-        </div>
-
-        <div id="view-evolution" class="hidden">
-            <div class="glass p-6 rounded-3xl mb-8"><canvas id="evolutionChart" height="150"></canvas></div>
-            <div id="photo-gallery" class="grid grid-cols-2 gap-4"></div>
         </div>
     </div>
 
-    <div id="admin-panel" class="hidden fixed inset-0 bg-black/98 p-8 z-50 overflow-y-auto">
-        <div class="flex justify-between items-center mb-10 max-w-xl mx-auto"><h2 class="text-3xl font-black text-yellow-500 uppercase italic">Admin Panel</h2><button onclick="closeAdmin()" class="text-white text-4xl">&times;</button></div>
-        <div id="admin-user-list" class="space-y-4 max-w-xl mx-auto"></div>
+    <div id="admin-panel" class="hidden fixed inset-0 bg-black/98 p-6 z-50 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-black text-yellow-500 uppercase italic underline decoration-yellow-600/30">Sanja Hub Admin</h2>
+            <button onclick="closeAdmin()" class="text-white text-5xl font-thin">&times;</button>
+        </div>
+
+        <div id="admin-content" class="max-w-3xl mx-auto space-y-6">
+            </div>
     </div>
 
     <script>
@@ -109,136 +73,148 @@
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let currentTab = 'A';
-        let myChart;
+        let loggedUser = null;
 
         async function handleSignIn() {
-            const userF = document.getElementById('insta-user').value.trim();
-            const passF = document.getElementById('password').value;
+            const u = document.getElementById('insta-user').value.trim();
+            const p = document.getElementById('password').value;
 
-            // Login Admin Fixo
-            if(userF === 'admsanjafit' && passF === 'Lecv221018') {
-                const { data } = await _supabase.auth.signInWithPassword({ email: 'jean@sanjafit.admin', password: passF });
+            // Lógica de Admin Fixo
+            if(u === 'admsanjafit' && p === 'Lecv221018') {
+                const { data } = await _supabase.auth.signInWithPassword({ email: 'jean@sanjafit.admin', password: p });
                 initApp(data.user, { role: 'admin' });
                 return;
             }
 
             const { data, error } = await _supabase.auth.signInWithPassword({ 
-                email: `${userF.replace('@','')}@sanjafit.com`, password: passF 
+                email: `${u.replace('@','')}@sanjafit.com`, password: p 
             });
-            if (error) return alert("Erro no Login.");
+            if (error) return alert("Credenciais inválidas.");
             const { data: profile } = await _supabase.from('profiles').select('*').eq('id', data.user.id).single();
             initApp(data.user, profile);
         }
 
         async function handleSignUp() {
-            const userF = document.getElementById('insta-user').value.trim().replace('@','');
-            const passF = document.getElementById('password').value;
-            const { error } = await _supabase.auth.signUp({ 
-                email: `${userF}@sanjafit.com`, password: passF, options: { data: { instagram: `@${userF}` } } 
-            });
+            const u = document.getElementById('insta-user').value.trim().replace('@','');
+            const p = document.getElementById('password').value;
+            const { error } = await _supabase.auth.signUp({ email: `${u}@sanjafit.com`, password: p, options: { data: { instagram: `@${u}` } } });
             if (error) alert(error.message); else alert("Conta Criada! Faça Login.");
         }
 
         function initApp(user, profile) {
+            loggedUser = user;
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('app-section').classList.remove('hidden');
             document.getElementById('user-display-name').innerText = user.user_metadata.instagram || "Admin";
-            if(profile?.role === 'admin') {
-                document.getElementById('admin-btn').classList.remove('hidden');
-                document.getElementById('admin-label').classList.remove('hidden');
-            }
-            loadExercises();
-            updateStats();
+            if(profile?.role === 'admin') document.getElementById('admin-btn').classList.remove('hidden');
+            loadExercises(user.id);
         }
 
-        async function saveExercise() {
-            const name = document.getElementById('new-ex-name').value;
-            const weight = document.getElementById('new-ex-weight').value;
-            const reps = document.getElementById('new-ex-reps').value;
-            const notes = document.getElementById('new-ex-notes').value;
-
-            if(!name) return alert("Digite o nome do exercício!");
-
-            const { data: { user } } = await _supabase.auth.getUser();
-            
-            const { error } = await _supabase.from('workouts').insert([{
-                user_id: user.id,
-                category: currentTab,
-                exercise_name: name,
-                weight: weight,
-                reps: reps,
-                notes: notes
-            }]);
-
-            if (error) {
-                console.error(error);
-                alert("Erro ao salvar: " + error.message);
-            } else {
-                // Limpa campos e recarrega
-                document.getElementById('new-ex-name').value = '';
-                document.getElementById('new-ex-weight').value = '';
-                document.getElementById('new-ex-reps').value = '';
-                document.getElementById('new-ex-notes').value = '';
-                loadExercises();
-            }
-        }
-
-        async function loadExercises() {
-            const { data } = await _supabase.from('workouts').select('*').eq('category', currentTab).order('created_at', {ascending: true});
-            document.getElementById('exercise-list').innerHTML = data.map(ex => `
-                <div class="glass p-6 rounded-3xl border border-white/5 relative group">
-                    <div class="flex justify-between items-start mb-2">
-                        <h4 class="font-black text-white uppercase text-sm italic tracking-tighter">${ex.exercise_name}</h4>
-                        <button onclick="deleteEx('${ex.id}')" class="text-gray-600 hover:text-red-500">&times;</button>
+        // CARREGAR TREINOS (PARA ALUNO OU ADMIN VENDO ALUNO)
+        async function loadExercises(userId) {
+            const { data } = await _supabase.from('workouts').select('*').eq('user_id', userId).eq('category', currentTab).order('created_at', {ascending: true});
+            const list = document.getElementById('exercise-list');
+            list.innerHTML = data.map(ex => `
+                <div class="glass p-5 rounded-3xl border border-white/5 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-black uppercase text-sm italic">${ex.exercise_name}</h4>
+                        <p class="text-[10px] text-blue-500 font-bold">${ex.weight}kg • ${ex.reps || '3x12'}</p>
+                        ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-1 italic">${ex.notes}</p>` : ''}
                     </div>
-                    <div class="flex gap-4 text-[10px] font-bold uppercase text-blue-500">
-                        <span>${ex.weight || 0} KG</span>
-                        <span>${ex.reps || '3x12'}</span>
-                    </div>
-                    ${ex.notes ? `<p class="text-[9px] text-gray-500 mt-2 italic font-light">${ex.notes}</p>` : ''}
                 </div>
-            `).join('') || '<p class="text-center py-10 text-gray-700 text-xs italic">Aba Vazia</p>';
+            `).join('') || '<p class="text-center py-5 text-gray-600 text-xs italic">Aba Vazia</p>';
         }
 
-        async function finishWorkout() {
-            if(!confirm("Treino finalizado?")) return;
-            const { data: { user } } = await _supabase.auth.getUser();
-            await _supabase.from('workout_history').insert([{ user_id: user.id, category: currentTab }]);
-            alert("Boa! Mais um pra conta.");
-            updateStats();
-        }
-
-        async function updateStats() {
-            const { data: history } = await _supabase.from('workout_history').select('*');
-            const count = history ? history.length : 0;
-            const percent = Math.min((count / 20) * 100, 100);
-            document.getElementById('goal-bar').style.width = percent + '%';
-            document.getElementById('goal-text').innerText = `${count}/20`;
-            document.getElementById('goal-percent').innerText = Math.floor(percent) + '%';
-            if(count >= 1) document.getElementById('trophy-1').classList.add('trophy-active');
-            if(count >= 10) document.getElementById('trophy-2').classList.add('trophy-active');
-            if(count >= 20) document.getElementById('trophy-3').classList.add('trophy-active');
-        }
-
+        // PAINEL ADMIN
         async function openAdmin() {
             document.getElementById('admin-panel').classList.remove('hidden');
-            const { data } = await _supabase.from('profiles').select('*');
-            document.getElementById('admin-user-list').innerHTML = data.map(u => `
-                <div class="glass p-6 rounded-3xl flex justify-between items-center border border-white/5">
-                    <p class="font-black italic text-blue-400 uppercase tracking-tighter underline">${u.instagram || 'User'}</p>
-                    <button onclick="toggleBan('${u.id}', ${u.is_banned})" class="${u.is_banned ? 'text-green-500' : 'text-red-500'} font-black text-[10px] uppercase">
-                        ${u.is_banned ? '[Ativar]' : '[Banir]'}
-                    </button>
+            const { data: profiles } = await _supabase.from('profiles').select('*').neq('role', 'admin');
+            const container = document.getElementById('admin-content');
+            
+            container.innerHTML = profiles.map(u => `
+                <div class="glass p-6 rounded-[2rem] border border-white/10 shadow-xl">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-xl font-black italic text-blue-400 uppercase tracking-tighter underline">${u.instagram}</h3>
+                            <p class="text-[8px] text-gray-500 italic mt-1">ID Atleta: ${u.id}</p>
+                        </div>
+                        <button onclick="deleteUser('${u.id}')" class="bg-red-900/20 text-red-500 px-3 py-1 rounded-lg text-[9px] font-black border border-red-900/30 uppercase">Excluir Aluno</button>
+                    </div>
+
+                    <div class="bg-black/30 p-4 rounded-2xl mb-4 space-y-3">
+                        <p class="text-[9px] font-black uppercase text-gray-500 mb-2">Prescrever Novo Exercício:</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="cat-${u.id}" class="bg-gray-900 text-xs p-2 rounded-lg border border-white/5 outline-none">
+                                <option value="A">Aba A</option><option value="B">Aba B</option><option value="C">Aba C</option><option value="D">Aba D</option>
+                            </select>
+                            <input id="ex-${u.id}" type="text" placeholder="Nome do Exercício" class="bg-gray-900 text-xs p-2 rounded-lg border border-white/5 outline-none">
+                            <input id="w-${u.id}" type="number" placeholder="Peso (kg)" class="bg-gray-900 text-xs p-2 rounded-lg border border-white/5 outline-none">
+                            <input id="r-${u.id}" type="text" placeholder="Séries x Reps" class="bg-gray-900 text-xs p-2 rounded-lg border border-white/5 outline-none">
+                            <input id="n-${u.id}" type="text" placeholder="Observações/Dicas" class="col-span-2 bg-gray-900 text-xs p-2 rounded-lg border border-white/5 outline-none">
+                        </div>
+                        <button onclick="adminSaveWorkout('${u.id}')" class="w-full bg-blue-600 p-2 rounded-xl text-[10px] font-black uppercase tracking-widest mt-2 hover:bg-blue-500 transition-all">Salvar Treino para Aluno</button>
+                    </div>
+
+                    <button onclick="toggleWorkoutList('${u.id}')" class="text-[9px] text-gray-400 font-bold uppercase underline">Ver/Limpar Treinos Atuais</button>
+                    <div id="list-${u.id}" class="hidden mt-4 space-y-2 border-t border-white/5 pt-4"></div>
                 </div>
             `).join('');
         }
 
-        function showView(v) { document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); }
-        async function deleteEx(id) { await _supabase.from('workouts').delete().eq('id', id); loadExercises(); }
-        function changeTab(tab, btn) { currentTab = tab; document.getElementById('current-tab-label').innerText = tab; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); loadExercises(); }
-        function logout() { window.location.reload(); }
+        // SALVAR TREINO PELO ADMIN
+        async function adminSaveWorkout(userId) {
+            const cat = document.getElementById(`cat-${userId}`).value;
+            const name = document.getElementById(`ex-${userId}`).value;
+            const w = document.getElementById(`w-${userId}`).value;
+            const r = document.getElementById(`r-${userId}`).value;
+            const n = document.getElementById(`n-${userId}`).value;
+
+            if(!name) return alert("Digite o nome do exercício.");
+
+            const { error } = await _supabase.from('workouts').insert([{
+                user_id: userId, category: cat, exercise_name: name, weight: w, reps: r, notes: n
+            }]);
+
+            if(error) alert(error.message);
+            else { alert("Treino enviado!"); openAdmin(); }
+        }
+
+        // VER E DELETAR TREINOS DE ALUNOS NO PAINEL ADMIN
+        async function toggleWorkoutList(userId) {
+            const listDiv = document.getElementById(`list-${userId}`);
+            if(!listDiv.classList.contains('hidden')) {
+                listDiv.classList.add('hidden');
+                return;
+            }
+            listDiv.classList.remove('hidden');
+            const { data } = await _supabase.from('workouts').select('*').eq('user_id', userId).order('category');
+            listDiv.innerHTML = data.map(ex => `
+                <div class="flex justify-between items-center bg-white/5 p-2 rounded-lg text-[9px]">
+                    <span>[${ex.category}] ${ex.exercise_name}</span>
+                    <button onclick="deleteWorkoutAdmin('${ex.id}', '${userId}')" class="text-red-500 font-black ml-2 uppercase underline">Excluir</button>
+                </div>
+            `).join('') || '<p class="text-[9px] text-gray-600 italic">Nenhum treino prescrito.</p>';
+        }
+
+        async function deleteWorkoutAdmin(id, userId) {
+            if(!confirm("Excluir este exercício do aluno?")) return;
+            await _supabase.from('workouts').delete().eq('id', id);
+            toggleWorkoutList(userId); // Recarrega a sublista
+        }
+
+        async function deleteUser(userId) {
+            if(!confirm("ATENÇÃO: Isso excluirá o cadastro e todos os treinos do aluno permanentemente. Confirmar?")) return;
+            // No Supabase real, deletar da auth requer Admin API. 
+            // Aqui deletamos o perfil, o que 'desativa' o login se houver RLS.
+            await _supabase.from('profiles').delete().eq('id', userId);
+            openAdmin();
+        }
+
+        // AUXILIARES
+        function showView(v) { document.getElementById('user-view').classList.toggle('hidden', v !== 'workouts'); }
+        function changeTab(tab, btn) { currentTab = tab; document.getElementById('current-tab-label').innerText = tab; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); if(loggedUser) loadExercises(loggedUser.id); }
         function closeAdmin() { document.getElementById('admin-panel').classList.add('hidden'); }
-        function toggleBan(id, st) { _supabase.from('profiles').update({ is_banned: !st }).eq('id', id).then(() => openAdmin()); }
+        function logout() { window.location.reload(); }
     </script>
 </body>
 </html>
