@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SanjaFit | Professional Elite</title>
+    <title>SanjaFit | Elite Professional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,7 +18,7 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .active-tab { background: #3b82f6 !important; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); border: none !important; }
         .active-view { border-bottom: 3px solid #3b82f6; color: white !important; }
-        .checked-ex { opacity: 0.2; text-decoration: line-through; filter: grayscale(1); transform: scale(0.98); transition: all 0.3s; }
+        .checked-ex { opacity: 0.25; text-decoration: line-through; filter: grayscale(1); transform: scale(0.98); }
         .trophy-on { opacity: 1 !important; grayscale: 0 !important; filter: drop-shadow(0 0 8px gold); }
         .loader { border-top-color: #3b82f6; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -26,19 +26,19 @@
 </head>
 <body class="text-white min-h-screen flex flex-col pb-10">
 
-    <div id="section-login" class="flex flex-col items-center justify-center min-h-screen p-6">
+    <div id="section-login" class="flex flex-col items-center justify-center min-h-screen p-6 text-center">
         <h1 class="text-5xl font-black italic text-blue-500 uppercase mb-8 tracking-tighter">SANJA<span class="text-white">FIT</span></h1>
-        <div class="glass p-8 rounded-[2rem] w-full max-w-md shadow-2xl">
+        <div class="glass p-8 rounded-[2rem] w-full max-w-md shadow-2xl border border-white/5">
             <input id="login-user" type="text" placeholder="@seu_instagram" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
-            <input id="login-pass" type="password" placeholder="Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500 text-white">
+            <input id="login-pass" type="password" placeholder="Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none focus:border-blue-500">
             <button onclick="handleSignIn()" class="w-full bg-blue-600 hover:bg-blue-700 p-4 rounded-xl font-black uppercase tracking-widest shadow-lg transition-all active:scale-95">Entrar</button>
-            <button onclick="handleSignUp()" class="w-full mt-6 text-[10px] text-gray-500 font-bold uppercase hover:text-white transition-colors">Criar Conta</button>
+            <button onclick="handleSignUp()" class="w-full mt-6 text-[10px] text-gray-500 font-bold uppercase hover:text-white transition-colors">Criar Conta Atleta</button>
         </div>
     </div>
 
     <div id="section-app" class="hidden flex-grow max-w-2xl mx-auto p-4 w-full">
         <header class="flex justify-between items-center py-6 mb-4">
-            <h2 id="display-name" class="text-2xl font-black italic uppercase text-blue-500 tracking-tighter">@USUARIO</h2>
+            <h2 id="display-name" class="text-2xl font-black italic uppercase text-blue-500 tracking-tighter italic">@USUARIO</h2>
             <button onclick="location.reload()" class="text-red-400 text-[10px] font-black uppercase border border-red-900/30 px-4 py-2 rounded-xl">Sair</button>
         </header>
 
@@ -47,20 +47,20 @@
             <button onclick="switchView('evolution')" id="nav-evolution" class="flex-1 py-4">Evolução</button>
         </div>
 
-        <div class="glass sticky top-4 z-50 p-4 rounded-2xl flex justify-between items-center mb-8 border-blue-500/20 shadow-xl">
+        <div class="glass sticky top-4 z-50 p-4 rounded-2xl flex justify-between items-center mb-8 border-blue-500/20 shadow-2xl">
             <div class="flex flex-col">
-                <span class="text-[9px] font-black uppercase text-gray-500 italic">Descanso Ativo</span>
+                <span class="text-[9px] font-black uppercase text-gray-500">Descanso</span>
                 <span id="timer-display" class="text-2xl font-black tabular-nums text-blue-500">00:30</span>
             </div>
-            <button onclick="startRestTimer()" class="bg-blue-600 px-6 py-2 rounded-xl font-black text-xs uppercase italic tracking-widest active:scale-95 transition-all">Iniciar 30s</button>
+            <button onclick="startRestTimer()" class="bg-blue-600 px-6 py-2 rounded-xl font-black text-xs uppercase italic tracking-widest active:scale-95">Iniciar 30s</button>
         </div>
 
         <div id="view-workouts">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div class="glass p-6 rounded-3xl text-center">
-                    <p class="text-[9px] font-black uppercase text-gray-500 mb-2 italic">Meta Mensal (20)</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 text-center text-gray-500">
+                <div class="glass p-6 rounded-3xl">
+                    <p class="text-[9px] font-black uppercase mb-2">Meta de Sessões (20)</p>
                     <div class="w-full bg-white/5 rounded-full h-2 mb-2 overflow-hidden"><div id="bar-goal" class="bg-blue-600 h-full w-0 transition-all duration-1000"></div></div>
-                    <p id="txt-goal" class="text-[10px] font-bold text-blue-400 italic">0/20 Treinos</p>
+                    <p id="txt-goal" class="text-[10px] font-bold text-blue-400 italic">0/20</p>
                 </div>
                 <div class="glass p-6 rounded-3xl flex justify-around items-center">
                     <span id="t1" class="text-3xl opacity-10 grayscale transition-all">🏆</span>
@@ -77,26 +77,22 @@
             </div>
 
             <div id="list-workouts" class="space-y-4 mb-8"></div>
-            
             <button onclick="finishSession()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg mb-10 active:scale-95 transition-all">Concluir Treino <span id="finish-label">A</span></button>
             
             <div class="mt-10 pt-8 border-t border-white/10">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xs font-black uppercase text-gray-500 italic">Histórico de Sessões</h3>
-                    <button onclick="clearHistory()" class="text-[9px] text-red-500 font-bold uppercase underline italic">Limpar Tudo</button>
-                </div>
+                <h3 class="text-xs font-black uppercase text-gray-500 italic mb-4">Histórico Recente</h3>
                 <div id="history-list" class="space-y-2"></div>
             </div>
         </div>
 
         <div id="view-evolution" class="hidden">
-            <div class="glass p-8 rounded-[2rem] mb-8 border border-white/5 shadow-2xl">
-                <h3 class="text-center font-black uppercase mb-6 italic text-xs text-blue-500 tracking-widest">Registrar Shape</h3>
+            <div class="glass p-8 rounded-[2rem] mb-8 border border-white/5">
+                <h3 class="text-center font-black uppercase mb-6 italic text-xs text-blue-500 tracking-widest">Nova Foto de Evolução</h3>
                 <div class="space-y-4">
                     <input type="file" id="file-photo" accept="image/*" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-600 file:text-white">
-                    <input type="number" id="input-weight-evo" placeholder="Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs text-white">
+                    <input type="number" id="input-weight-evo" placeholder="Seu Peso Atual (kg)" class="w-full p-4 rounded-xl bg-black/40 border border-white/10 outline-none text-xs">
                     <button id="btn-upload" onclick="uploadEvolution()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs flex justify-center items-center gap-2">
-                        <span>Postar Foto</span>
+                        <span>Postar Shape</span>
                         <div id="spin-upload" class="hidden loader rounded-full border-2 border-white h-4 w-4"></div>
                     </button>
                 </div>
@@ -105,9 +101,9 @@
         </div>
 
         <footer class="mt-20 py-8 border-t border-white/5 text-center">
-            <p class="text-[9px] font-black text-gray-600 uppercase mb-4 italic tracking-widest text-center">Developed by</p>
-            <div class="flex flex-col gap-2">
-                <a href="https://instagram.com/systemsjc_" target="_blank" class="text-blue-500 font-bold text-xs italic tracking-tighter hover:text-white transition-colors">@SYSTEMSJC_</a>
+            <p class="text-[9px] font-black text-gray-600 uppercase mb-4 italic tracking-widest">Developed by</p>
+            <div class="flex flex-col gap-2 italic">
+                <a href="https://instagram.com/systemsjc_" target="_blank" class="text-blue-500 font-bold text-xs tracking-tighter hover:text-white transition-colors">@SYSTEMSJC_</a>
                 <a href="https://instagram.com/ojeanvianna_" target="_blank" class="text-gray-400 font-bold text-[10px] tracking-tighter hover:text-white transition-colors">@OJEANVIANNA_</a>
             </div>
         </footer>
@@ -128,12 +124,7 @@
             const timer = setInterval(() => {
                 seconds--;
                 display.innerText = `00:${seconds < 10 ? '0' + seconds : seconds}`;
-                if (seconds <= 0) { 
-                    clearInterval(timer); 
-                    display.innerText = "00:30"; 
-                    beep.play(); 
-                    alert("Descanso Finalizado! Próxima série."); 
-                }
+                if (seconds <= 0) { clearInterval(timer); display.innerText = "00:30"; beep.play(); alert("Descanso Finalizado! Próxima série."); }
             }, 1000);
         }
 
@@ -141,7 +132,7 @@
             const user = document.getElementById('login-user').value.trim().replace('@','');
             const pass = document.getElementById('login-pass').value;
             const { data, error } = await _supabase.auth.signInWithPassword({ email: `${user}@sanjafit.com`, password: pass });
-            if(error) return alert("Erro no Login.");
+            if(error) return alert("Verifique Usuário e Senha.");
             initApp(data.user);
         }
 
@@ -149,7 +140,7 @@
             const user = document.getElementById('login-user').value.trim().replace('@','');
             const pass = document.getElementById('login-pass').value;
             const { error } = await _supabase.auth.signUp({ email: `${user}@sanjafit.com`, password: pass, options: { data: { instagram: `@${user}` } } });
-            if(error) alert(error.message); else alert("Conta Criada!");
+            if(error) alert(error.message); else alert("Conta Atleta Criada!");
         }
 
         function initApp(user) {
@@ -165,22 +156,25 @@
             document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
                 <div id="ex-${ex.id}" class="glass p-5 rounded-2xl border border-white/5 flex justify-between items-center transition-all">
                     <div class="flex items-center gap-4">
-                        <input type="checkbox" onchange="document.getElementById('ex-${ex.id}').classList.toggle('checked-ex', this.checked)" class="w-6 h-6 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600 transition-all cursor-pointer">
+                        <input type="checkbox" onchange="document.getElementById('ex-${ex.id}').classList.toggle('checked-ex', this.checked)" class="w-6 h-6 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600 cursor-pointer transition-all">
                         <div>
                             <h4 class="font-black uppercase text-sm italic tracking-tighter">${ex.exercise_name}</h4>
                             <p class="text-[10px] text-blue-500 font-bold mt-1 italic">${ex.weight}kg • ${ex.reps}</p>
                         </div>
                     </div>
+                    <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase italic italic tracking-tighter">Deletar</button>
                 </div>
             `).join('') || '<p class="text-center py-5 text-gray-700 text-xs italic">Aba Vazia</p>';
         }
+
+        async function deleteEx(id) { if(confirm("Apagar exercício?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
 
         async function updateStats() {
             const { data } = await _supabase.from('workout_history').select('*').eq('user_id', currentUser.id).order('completed_at', {ascending: false});
             const count = data ? data.length : 0;
             const percent = Math.min((count/20)*100, 100);
             document.getElementById('bar-goal').style.width = percent + '%';
-            document.getElementById('txt-goal').innerText = `${count}/20 Treinos`;
+            document.getElementById('txt-goal').innerText = `${count}/20 Sessões`;
             document.getElementById('t1').classList.toggle('trophy-on', count >= 1);
             document.getElementById('t2').classList.toggle('trophy-on', count >= 10);
             document.getElementById('t3').classList.toggle('trophy-on', count >= 20);
@@ -188,10 +182,12 @@
             document.getElementById('history-list').innerHTML = (data || []).slice(0, 8).map(h => `
                 <div class="flex justify-between items-center text-[10px] bg-white/5 p-3 rounded-lg font-bold italic border border-white/5">
                     <span class="text-blue-500 uppercase tracking-widest italic">Treino ${h.category} - ${new Date(h.completed_at).toLocaleDateString()}</span>
-                    <button onclick="deleteHistory('${h.id}')" class="text-red-900 uppercase font-black text-[8px] underline italic">Excluir</button>
+                    <button onclick="deleteHistory('${h.id}')" class="text-red-900 uppercase font-black text-[8px] underline">Excluir</button>
                 </div>
             `).join('') || '<p class="text-[9px] text-gray-600 italic">Sem histórico.</p>';
         }
+
+        async function deleteHistory(id) { if(confirm("Apagar esta sessão?")) { await _supabase.from('workout_history').delete().eq('id', id); updateStats(); } }
 
         async function uploadEvolution() {
             const fileInput = document.getElementById('file-photo');
@@ -202,11 +198,11 @@
             document.getElementById('spin-upload').classList.remove('hidden');
             const name = `${Date.now()}_${file.name}`;
             
-            // CORREÇÃO FINAL: Nome do bucket em minúsculas conforme seu Supabase
+            // USANDO O NOME 'formas' (MINÚSCULO) COMO PADRÃO
             const { error: upErr } = await _supabase.storage.from('formas').upload(name, file);
             
             if(upErr) { 
-                alert("Erro Bucket: " + upErr.message + " (Verifique se o nome é 'formas' no Supabase)"); 
+                alert("Erro ao subir imagem: " + upErr.message); 
                 document.getElementById('spin-upload').classList.add('hidden'); 
                 return; 
             }
@@ -215,15 +211,15 @@
             await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: urlData.publicUrl, body_weight: weight }]);
             
             document.getElementById('spin-upload').classList.add('hidden');
-            fileInput.value = ''; document.getElementById('input-weight-evo').value = '';
-            alert("Evolução Salva com Sucesso!"); loadGallery();
+            fileInput.value = '';
+            alert("Shape Salvo!"); loadGallery();
         }
 
         async function loadGallery() {
             const { data } = await _supabase.from('evolution_gallery').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false});
-            document.getElementById('list-gallery').innerHTML = data.map(p => `
+            document.getElementById('list-gallery').innerHTML = (data || []).map(p => `
                 <div class="glass rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
-                    <img src="${p.photo_url}" class="w-full h-64 object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=Erro+ao+Carregar'">
+                    <img src="${p.photo_url}" class="w-full h-64 object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=Erro+no+Link'">
                     <div class="p-5 flex justify-between items-center bg-black/40">
                         <span class="text-blue-500 font-black italic text-xs italic">${new Date(p.created_at).toLocaleDateString()}</span>
                         <span class="text-white font-black text-xs italic">${p.body_weight} KG</span>
@@ -232,7 +228,6 @@
             `).join('');
         }
 
-        async function deleteHistory(id) { if(confirm("Excluir esta sessão?")) { await _supabase.from('workout_history').delete().eq('id', id); updateStats(); } }
         async function finishSession() { await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]); alert(`Treino ${currentLetter} registrado!`); updateStats(); }
         function changeLetter(l, btn) { currentLetter = l; document.getElementById('finish-label').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); loadWorkouts(); }
         function switchView(v) { document.getElementById('view-workouts').classList.toggle('hidden', v !== 'workouts'); document.getElementById('view-evolution').classList.toggle('hidden', v !== 'evolution'); document.getElementById('nav-workouts').classList.toggle('active-view', v === 'workouts'); document.getElementById('nav-evolution').classList.toggle('active-view', v === 'evolution'); }
