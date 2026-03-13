@@ -7,7 +7,6 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://seu-link-da-imagem.png">
     <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22SanjaFit%22,%22short_name%22:%22SanjaFit%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22#000000%22,%22theme_color%22:%22#3b82f6%22}">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,67 +14,70 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), 
-                        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop');
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=2070&auto=format&fit=crop');
             background-size: cover; background-position: center; background-attachment: fixed;
-            color: white; overflow-x: hidden; min-height: 100vh;
+            color: white; min-height: 100vh;
         }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .active-tab { background: #3b82f6 !important; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
-        .active-view { border-bottom: 3px solid #3b82f6; color: white !important; }
-        .skeleton { position: relative; overflow: hidden; background: rgba(255,255,255,0.05); border-radius: 1rem; }
-        .skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); animation: shimmer 1.5s infinite; }
-        @keyframes shimmer { 100% { transform: translateX(100%); } }
-        .app-logo { font-size: 1.8rem; font-weight: 900; font-style: italic; text-transform: uppercase; color: #3b82f6; }
-        .member-counter { font-family: 'Orbitron', sans-serif; background: #000; color: #3b82f6; padding: 4px 10px; border-radius: 8px; border: 1px solid #1e3a8a; }
+
+        .glass { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .active-tab { background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .active-view { border-bottom: 3px solid #3b82f6; color: white !important; font-weight: 800; }
+        .app-logo { font-size: 2.2rem; font-weight: 900; letter-spacing: -1.5px; background: linear-gradient(to right, #3b82f6, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; font-style: italic; }
+        .member-counter { font-family: 'Orbitron', sans-serif; background: #000; color: #3b82f6; padding: 6px 12px; border-radius: 10px; border: 1px solid #3b82f6; }
         
-        /* MODAL FOTO FULLSCREEN */
-        #photo-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
-        #modal-img { max-width: 100%; max-height: 75vh; border-radius: 1rem; object-fit: contain; }
+        input, select { background: rgba(0,0,0,0.4) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
         
-        /* OVERLAY SUCESSO */
-        #success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 4000; align-items: center; justify-content: center; flex-direction: column; }
+        #photo-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 5000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+        #modal-img { max-width: 100%; max-height: 75vh; border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.1); }
+        
+        #success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 6000; align-items: center; justify-content: center; }
     </style>
 </head>
 <body class="pb-10">
 
     <div id="success-overlay">
-        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_pqnfmone.json" background="transparent" speed="1" style="width: 250px; height: 250px;" autoplay></lottie-player>
-        <h2 class="text-xl font-black italic text-blue-500 mt-2">MISSÃO CUMPRIDA! 🔥</h2>
+        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_pqnfmone.json" background="transparent" speed="1.2" style="width: 280px; height: 280px;" autoplay></lottie-player>
     </div>
 
     <div id="photo-modal">
-        <button onclick="closeModal()" class="absolute top-5 right-5 text-white font-black text-2xl p-4">✕</button>
-        <img id="modal-img" src="" alt="Shape Full">
-        <div class="mt-6 flex flex-col items-center gap-4 w-full max-w-xs">
-            <span id="modal-info" class="text-xs font-bold italic text-blue-500"></span>
-            <button id="btn-delete-photo" class="w-full bg-red-600 p-4 rounded-xl font-black uppercase text-xs tracking-widest shadow-lg">🗑️ Excluir Foto</button>
+        <button onclick="closeModal()" class="absolute top-5 right-5 text-white bg-white/10 w-12 h-12 rounded-full font-bold">✕</button>
+        <img id="modal-img" src="">
+        <div class="mt-8 flex flex-col items-center gap-4 w-full max-w-sm">
+            <span id="modal-info" class="text-sm font-bold text-blue-400"></span>
+            <button id="btn-delete-photo" class="w-full bg-red-600/20 text-red-500 border border-red-500/50 p-4 rounded-2xl font-black uppercase text-xs">Excluir Shape</button>
         </div>
     </div>
 
     <div id="section-login" class="flex flex-col items-center justify-center min-h-screen p-6">
-        <div class="flex items-center gap-3 mb-8"><span class="text-4xl">🏋️‍♂️</span><h1 class="app-logo">Sanja<span>Fit</span></h1></div>
-        <div class="glass p-8 rounded-[2.5rem] w-full max-w-md shadow-2xl text-center">
-            <input id="login-user" type="text" placeholder="@seu_instagram" class="w-full p-4 mb-4 rounded-xl bg-black/40 border border-white/10 outline-none text-white">
-            <input id="login-pass" type="password" placeholder="Senha" class="w-full p-4 mb-8 rounded-xl bg-black/40 border border-white/10 outline-none text-white">
-            <button onclick="handleSignIn()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase tracking-widest active:scale-95 transition-all shadow-lg">Entrar</button>
-            <button onclick="handleSignUp()" class="w-full mt-6 text-[10px] text-gray-400 font-bold uppercase tracking-widest hover:text-white">Criar Conta Atleta</button>
+        <h1 class="app-logo mb-10">Sanja<span>Fit</span></h1>
+        <div class="glass p-10 rounded-[3rem] w-full max-w-md text-center">
+            <input id="login-user" type="text" placeholder="@seu_instagram" class="w-full p-5 mb-4 rounded-2xl outline-none">
+            <input id="login-pass" type="password" placeholder="Senha" class="w-full p-5 mb-10 rounded-2xl outline-none">
+            <button onclick="handleSignIn()" class="w-full bg-blue-600 p-5 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all">Entrar</button>
+            <button onclick="handleSignUp()" class="w-full mt-8 text-[11px] text-gray-400 font-bold uppercase tracking-widest hover:text-white">Criar Conta</button>
         </div>
     </div>
 
     <div id="section-app" class="hidden max-w-2xl mx-auto p-4 w-full">
-        <header class="flex justify-between items-center py-6">
-            <div class="app-logo text-lg italic">Sanja<span>Fit</span></div>
+        <header class="flex justify-between items-center py-8">
+            <div class="app-logo text-2xl italic">Sanja<span>Fit</span></div>
             <div class="member-counter text-xs" id="member-count">0000</div>
-            <button onclick="handleSignOut()" class="text-red-500 text-[10px] font-bold uppercase border border-red-500/20 px-3 py-1 rounded-lg">Sair</button>
+            <button onclick="handleSignOut()" class="text-red-400 text-[10px] font-bold uppercase glass px-4 py-2 rounded-xl">Sair</button>
         </header>
 
-        <nav class="flex border-b border-white/10 mb-6 font-black uppercase text-[8px] tracking-widest text-center text-gray-500">
+        <nav class="flex border-b border-white/5 mb-8 font-black uppercase text-[9px] tracking-widest text-center text-gray-500">
             <button onclick="switchView('workouts')" id="nav-workouts" class="flex-1 py-4 active-view">Treinos</button>
             <button onclick="switchView('evolution')" id="nav-evolution" class="flex-1 py-4">Evolução</button>
             <button onclick="switchView('macros')" id="nav-macros" class="flex-1 py-4">Dieta</button>
@@ -83,74 +85,78 @@
         </nav>
 
         <div id="view-workouts" class="space-y-6">
-            <div class="grid grid-cols-4 gap-2">
-                <button onclick="changeLetter('A', this)" class="letter-btn p-4 rounded-xl glass font-black active-tab">A</button>
-                <button onclick="changeLetter('B', this)" class="letter-btn p-4 rounded-xl glass font-black">B</button>
-                <button onclick="changeLetter('C', this)" class="letter-btn p-4 rounded-xl glass font-black">C</button>
-                <button onclick="changeLetter('D', this)" class="letter-btn p-4 rounded-xl glass font-black">D</button>
+            <div class="grid grid-cols-4 gap-3">
+                <button onclick="changeLetter('A', this)" class="letter-btn p-5 rounded-2xl glass font-black text-lg active-tab">A</button>
+                <button onclick="changeLetter('B', this)" class="letter-btn p-5 rounded-2xl glass font-black text-lg">B</button>
+                <button onclick="changeLetter('C', this)" class="letter-btn p-5 rounded-2xl glass font-black text-lg">C</button>
+                <button onclick="changeLetter('D', this)" class="letter-btn p-5 rounded-2xl glass font-black text-lg">D</button>
             </div>
 
-            <div class="glass p-5 rounded-[2rem]">
-                <h3 class="text-[10px] font-black uppercase mb-4 text-blue-500 italic">Novo Exercício (<span id="label-letter">A</span>)</h3>
-                <div class="grid grid-cols-2 gap-2 mb-4">
-                    <input id="in-name" type="text" placeholder="Nome" class="col-span-2 p-3 rounded-lg bg-white/5 outline-none text-xs text-white">
-                    <input id="in-weight" type="number" placeholder="Peso (kg)" class="p-3 rounded-lg bg-white/5 outline-none text-xs text-white">
-                    <input id="in-reps" type="text" placeholder="Séries" class="p-3 rounded-lg bg-white/5 outline-none text-xs text-white">
+            <div class="glass p-6 rounded-[2.5rem]">
+                <h3 class="text-[11px] font-black uppercase mb-4 text-blue-500 italic">Gerenciar Treino (<span id="label-letter">A</span>)</h3>
+                <div class="grid grid-cols-2 gap-3 mb-5">
+                    <input id="in-name" type="text" placeholder="Nome do Exercício" class="col-span-2 p-4 rounded-xl text-xs">
+                    <input id="in-weight" type="number" placeholder="Peso (kg)" class="p-4 rounded-xl text-xs">
+                    <input id="in-reps" type="text" placeholder="Séries/Reps" class="p-4 rounded-xl text-xs">
                 </div>
-                <button onclick="saveWorkout()" class="w-full bg-blue-600 p-3 rounded-lg font-black text-xs uppercase shadow-md">Salvar</button>
+                <button id="btn-save" onclick="saveWorkout()" class="w-full bg-blue-600 p-4 rounded-xl font-black text-xs uppercase shadow-lg">Salvar Exercício</button>
+                <button id="btn-cancel" onclick="cancelEdit()" class="hidden w-full mt-3 text-[10px] text-gray-500 font-bold uppercase underline">Cancelar Edição</button>
             </div>
 
-            <div id="list-workouts" class="space-y-3"></div>
-            <button onclick="finishSession()" class="w-full bg-green-600 p-5 rounded-2xl font-black uppercase italic shadow-lg active:scale-95 transition-all">Concluir Treino <span id="finish-label">A</span></button>
-            <div id="history-list" class="space-y-2 mt-4"></div>
+            <div id="list-workouts" class="space-y-4"></div>
+            
+            <button onclick="finishSession()" class="w-full bg-green-600 p-6 rounded-[2rem] font-black uppercase italic shadow-2xl active:scale-95 transition-all">Concluir Sessão <span id="finish-label">A</span></button>
+            
+            <div id="history-list" class="space-y-3 pt-10"></div>
         </div>
 
         <div id="view-evolution" class="hidden space-y-6">
-            <div class="glass p-4 rounded-3xl">
-                <h3 class="text-[10px] font-black text-blue-500 mb-4 italic text-center uppercase tracking-widest">Gráfico de Força</h3>
-                <select id="select-exercise-chart" onchange="loadLoadChart(this.value)" class="w-full bg-black text-[10px] mb-4 p-2 rounded border border-white/10 text-white outline-none">
+            <div class="glass p-6 rounded-[2.5rem]">
+                <h3 class="text-[10px] font-black text-blue-500 mb-6 italic uppercase text-center">Evolução de Carga</h3>
+                <select id="select-exercise-chart" onchange="loadLoadChart(this.value)" class="w-full bg-black/60 text-[11px] mb-6 p-4 rounded-xl border border-white/10 text-white outline-none">
                     <option value="">Escolher Exercício...</option>
                 </select>
-                <canvas id="loadChart" height="150"></canvas>
+                <canvas id="loadChart" height="180"></canvas>
             </div>
-            <div class="glass p-6 rounded-[2rem] text-center border border-white/10 shadow-xl">
-                <h3 class="font-black uppercase mb-4 italic text-xs text-blue-500">Postar Nova Foto</h3>
-                <input type="file" id="file-photo" accept="image/*" class="text-[10px] mb-4 w-full">
-                <input id="input-weight-evo" type="number" placeholder="Peso corporal atual (kg)" class="w-full p-3 rounded-lg bg-white/5 outline-none text-xs mb-4 text-white">
-                <button onclick="uploadEvolution()" class="w-full bg-blue-600 p-3 rounded-lg font-black text-xs uppercase italic">Enviar Shape</button>
+            
+            <div class="glass p-8 rounded-[2.5rem] text-center">
+                <h3 class="font-black uppercase mb-6 italic text-xs text-blue-500">Postar Shape</h3>
+                <input type="file" id="file-photo" accept="image/*" class="text-[11px] mb-6 block w-full">
+                <input id="input-weight-evo" type="number" placeholder="Peso corporal (kg)" class="w-full p-4 rounded-xl bg-white/5 outline-none text-sm mb-6 text-center font-bold">
+                <button onclick="uploadEvolution()" class="w-full bg-blue-600 p-5 rounded-2xl font-black uppercase italic text-xs">Fazer Upload</button>
             </div>
             <div id="list-gallery" class="grid grid-cols-1 gap-6"></div>
         </div>
 
         <div id="view-macros" class="hidden space-y-6">
-            <div class="glass p-6 rounded-[2rem]">
-                <h3 class="text-xs font-black uppercase text-blue-500 mb-6 italic text-center">Calculadora de Macros</h3>
+            <div class="glass p-8 rounded-[2.5rem]">
+                <h3 class="text-xs font-black uppercase text-blue-500 mb-8 italic text-center">Calculadora de Macros</h3>
                 <div class="space-y-4">
-                    <input id="macro-weight" type="number" placeholder="Seu Peso (kg)" class="w-full p-4 rounded-xl bg-white/5 outline-none text-white text-center">
-                    <select id="macro-goal" class="w-full p-4 rounded-xl bg-black border border-white/10 text-white">
-                        <option value="lose">Focar em Definição (Corte)</option>
-                        <option value="gain">Focar em Massa (Bulking)</option>
+                    <input id="macro-weight" type="number" placeholder="Seu Peso (kg)" class="w-full p-5 rounded-2xl text-center text-lg font-black">
+                    <select id="macro-goal" class="w-full p-5 rounded-2xl bg-black border border-white/10 font-bold">
+                        <option value="lose">Cutting (Definição)</option>
+                        <option value="gain">Bulking (Massa)</option>
                     </select>
-                    <button onclick="calculateMacros()" class="w-full bg-blue-600 p-4 rounded-xl font-black uppercase text-xs">Calcular Minha Dieta</button>
+                    <button onclick="calculateMacros()" class="w-full bg-blue-600 p-5 rounded-2xl font-black uppercase text-xs">Calcular</button>
                 </div>
-                <div id="macro-result" class="hidden mt-8 grid grid-cols-3 gap-2 text-center text-[9px] font-black uppercase">
-                    <div class="p-3 bg-blue-600/20 rounded-xl">PROT <p id="res-p" class="text-lg text-blue-500"></p></div>
-                    <div class="p-3 bg-green-600/20 rounded-xl">CARB <p id="res-c" class="text-lg text-green-500"></p></div>
-                    <div class="p-3 bg-yellow-600/20 rounded-xl">GORD <p id="res-g" class="text-lg text-yellow-500"></p></div>
+                <div id="macro-result" class="hidden mt-10 grid grid-cols-3 gap-3 text-center">
+                    <div class="p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20"><p class="text-[9px] font-black mb-1">PROT</p><p id="res-p" class="text-xl text-blue-500 font-black"></p></div>
+                    <div class="p-4 bg-green-500/10 rounded-2xl border border-green-500/20"><p class="text-[9px] font-black mb-1">CARB</p><p id="res-c" class="text-xl text-green-500 font-black"></p></div>
+                    <div class="p-4 bg-yellow-500/10 rounded-2xl border border-yellow-500/20"><p class="text-[9px] font-black mb-1">GORD</p><p id="res-g" class="text-xl text-yellow-500 font-black"></p></div>
                 </div>
             </div>
         </div>
 
         <div id="view-rank" class="hidden space-y-6">
-            <div class="text-center">
-                <h3 class="text-xs font-black uppercase text-blue-500 italic">Top 10 Atletas SanjaFit</h3>
-                <p class="text-[9px] text-gray-500 mt-1 uppercase tracking-widest italic">Pelo número total de treinos registrados</p>
-            </div>
-            <div id="ranking-list" class="space-y-3"></div>
+            <div id="ranking-list" class="space-y-4"></div>
         </div>
 
-        <footer class="mt-10 py-6 text-center italic text-[9px] text-gray-600 tracking-tighter">
-            PROJETO DESENVOLVIDO POR @SYSTEMSJC_ | @OJEANVIANNA_
+        <footer class="mt-20 py-10 text-center border-t border-white/5">
+            <p class="text-[9px] font-black text-gray-600 uppercase mb-4 italic tracking-widest">Desenvolvido por</p>
+            <div class="flex flex-col gap-2">
+                <a href="https://instagram.com/systemsjc_" target="_blank" class="text-blue-500 font-black text-xs italic hover:text-white transition-all">@SYSTEMSJC_</a>
+                <a href="https://instagram.com/ojeanvianna_" target="_blank" class="text-gray-400 font-bold text-[10px] italic hover:text-white transition-all">@OJEANVIANNA_</a>
+            </div>
         </footer>
     </div>
 
@@ -159,7 +165,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhemd0c29ia3lreHdzdmJtamZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTg4NTYsImV4cCI6MjA4ODc3NDg1Nn0.Ci_Hzqzf9Px8LTg7dNOXcu1dcTzBYWioH2yaFP2h6rI';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let currentUser = null, currentLetter = 'A', loadChart = null;
+        let currentUser = null, currentLetter = 'A', loadChart = null, editingId = null;
 
         window.onload = async () => {
             const { data: { user } } = await _supabase.auth.getUser();
@@ -177,7 +183,6 @@
             currentUser = user;
             document.getElementById('section-login').classList.add('hidden');
             document.getElementById('section-app').classList.remove('hidden');
-            document.getElementById('display-name').innerText = user.user_metadata.instagram || `@Atleta`;
             loadWorkouts(); updateStats(); loadGallery(); loadRanking();
         }
 
@@ -185,117 +190,136 @@
             const u = document.getElementById('login-user').value.trim().replace('@','');
             const p = document.getElementById('login-pass').value;
             const { data, error } = await _supabase.auth.signInWithPassword({ email: `${u}@sanjafit.com`, password: p });
-            if(error) return alert("Erro no login! Verifique usuário e senha.");
+            if(error) return alert("Erro no login.");
             initApp(data.user);
         }
 
         async function handleSignUp() {
             const u = document.getElementById('login-user').value.trim().replace('@','');
             const p = document.getElementById('login-pass').value;
-            if(u.length < 3) return alert("Digite um Instagram válido!");
-            const { data, error } = await _supabase.auth.signUp({ 
-                email: `${u}@sanjafit.com`, password: p, options: { data: { instagram: `@${u}` } } 
-            });
+            const { data, error } = await _supabase.auth.signUp({ email: `${u}@sanjafit.com`, password: p, options: { data: { instagram: `@${u}` } } });
             if(error) alert(error.message);
             else {
                 await _supabase.from('profiles').upsert({ id: data.user.id, instagram: `@${u}` });
-                alert("Atleta criado! Faça o login agora.");
+                alert("Atleta criado!");
             }
         }
 
         async function handleSignOut() { await _supabase.auth.signOut(); localStorage.clear(); window.location.reload(); }
 
-        // --- RANKING ---
+        // --- TREINOS (COM EDIÇÃO) ---
+        async function saveWorkout() {
+            const n = document.getElementById('in-name').value, w = document.getElementById('in-weight').value, r = document.getElementById('in-reps').value;
+            if(!n || !w) return alert("Dados incompletos!");
+
+            const payload = { user_id: currentUser.id, category: currentLetter, exercise_name: n, weight: String(w), reps: String(r) };
+            
+            if(editingId) {
+                await _supabase.from('workouts').update(payload).eq('id', editingId);
+                editingId = null;
+                document.getElementById('btn-save').innerText = "Salvar Exercício";
+                document.getElementById('btn-cancel').classList.add('hidden');
+            } else {
+                await _supabase.from('workouts').insert([payload]);
+            }
+            
+            document.getElementById('in-name').value = ''; document.getElementById('in-weight').value = ''; document.getElementById('in-reps').value = '';
+            loadWorkouts();
+        }
+
+        function editEx(ex) {
+            editingId = ex.id;
+            document.getElementById('in-name').value = ex.exercise_name;
+            document.getElementById('in-weight').value = ex.weight;
+            document.getElementById('in-reps').value = ex.reps;
+            document.getElementById('btn-save').innerText = "Atualizar Exercício";
+            document.getElementById('btn-cancel').classList.remove('hidden');
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
+
+        function cancelEdit() {
+            editingId = null;
+            document.getElementById('in-name').value = ''; document.getElementById('in-weight').value = ''; document.getElementById('in-reps').value = '';
+            document.getElementById('btn-save').innerText = "Salvar Exercício";
+            document.getElementById('btn-cancel').classList.add('hidden');
+        }
+
+        async function deleteEx(id) { if(confirm("Remover exercício?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
+
+        async function loadWorkouts() {
+            const { data } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('category', currentLetter).order('created_at');
+            const sel = document.getElementById('select-exercise-chart');
+            sel.innerHTML = `<option value="">Escolher para Gráfico...</option>` + (data || []).map(ex => `<option value="${ex.exercise_name}">${ex.exercise_name}</option>`).join('');
+            document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
+                <div class="glass p-5 rounded-2xl flex justify-between items-center border border-white/10">
+                    <div class="flex items-center gap-4">
+                        <input type="checkbox" class="w-6 h-6 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600 cursor-pointer">
+                        <div><h4 class="font-black uppercase text-sm italic">${ex.exercise_name}</h4><p class="text-[10px] text-blue-500 font-black">${ex.weight}kg • ${ex.reps}</p></div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick='editEx(${JSON.stringify(ex)})' class="text-blue-400 text-[10px] font-black uppercase underline">Editar</button>
+                        <button onclick="deleteEx('${ex.id}')" class="text-red-900 text-[10px] font-black uppercase underline">Apagar</button>
+                    </div>
+                </div>`).join('') || '<p class="text-center py-6 text-gray-600 text-[10px] font-black uppercase">Nenhum exercício cadastrado</p>';
+        }
+
+        // --- GALERIA (CORREÇÃO DE CARREGAMENTO) ---
+        async function loadGallery() {
+            const { data, error } = await _supabase.from('evolution_gallery').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false});
+            if(error) return console.error(error);
+            document.getElementById('list-gallery').innerHTML = (data || []).map(p => `
+                <div onclick="openPhoto('${p.photo_url}', '${p.id}', '${p.body_weight}', '${new Date(p.created_at).toLocaleDateString()}')" class="glass rounded-[2.5rem] overflow-hidden shadow-2xl cursor-pointer active:scale-95 transition-all border border-white/5">
+                    <img src="${p.photo_url}" class="w-full h-64 object-cover">
+                    <div class="p-5 flex justify-between items-center bg-black/60"><span class="text-blue-500 font-black italic text-[11px]">${new Date(p.created_at).toLocaleDateString()}</span><span class="text-white font-black text-xs uppercase">${p.body_weight} KG</span></div>
+                </div>`).join('') || '<p class="text-center py-10 text-gray-700 text-xs italic">Nenhum shape registrado</p>';
+        }
+
+        function openPhoto(url, id, weight, date) {
+            document.getElementById('modal-img').src = url;
+            document.getElementById('modal-info').innerText = `${date} | CARGA: ${weight}KG`;
+            document.getElementById('btn-delete-photo').onclick = () => deletePhoto(id);
+            document.getElementById('photo-modal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('photo-modal').style.display = 'none'; }
+        async function deletePhoto(id) { if(!confirm("Apagar foto?")) return; await _supabase.from('evolution_gallery').delete().eq('id', id); closeModal(); loadGallery(); }
+
+        // --- OUTRAS FUNÇÕES ---
         async function loadRanking() {
             const { data: history } = await _supabase.from('workout_history').select('user_id');
             const { data: profiles } = await _supabase.from('profiles').select('*');
             if(!history || !profiles) return;
-
             const counts = history.reduce((acc, curr) => { acc[curr.user_id] = (acc[curr.user_id] || 0) + 1; return acc; }, {});
             const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 10);
-            
             document.getElementById('ranking-list').innerHTML = sorted.map((r, i) => {
                 const prof = profiles.find(p => p.id === r[0]);
-                const name = prof ? prof.instagram : `User_${r[0].substring(0,4)}`;
+                const name = prof ? prof.instagram : `@Atleta`;
                 const isMe = r[0] === currentUser.id;
-                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i+1}`;
-                
-                return `
-                <div class="flex justify-between items-center p-4 ${isMe ? 'bg-blue-600/20 border-blue-500' : 'glass'} rounded-2xl border border-white/5 shadow-xl">
-                    <span class="text-xs font-black uppercase italic ${isMe ? 'text-blue-500' : 'text-white'}">
-                        ${medal} ${name}
-                    </span>
+                return `<div class="flex justify-between items-center p-5 ${isMe ? 'bg-blue-600/30 border-blue-500' : 'glass'} rounded-2xl border border-white/5">
+                    <span class="text-xs font-black uppercase italic ${isMe ? 'text-blue-400' : 'text-white'}">${i+1}º ${name}</span>
                     <span class="text-blue-500 font-black text-xs">${r[1]} Treinos</span>
                 </div>`;
             }).join('');
         }
 
-        // --- TREINOS ---
-        async function saveWorkout() {
-            const n = document.getElementById('in-name').value, w = document.getElementById('in-weight').value, r = document.getElementById('in-reps').value;
-            if(!n || !w || w <= 0) return alert("Peso inválido!");
-            await _supabase.from('workouts').insert([{ user_id: currentUser.id, category: currentLetter, exercise_name: n, weight: String(w), reps: String(r) }]);
-            document.getElementById('in-name').value = ''; document.getElementById('in-weight').value = ''; document.getElementById('in-reps').value = '';
-            loadWorkouts();
+        async function uploadEvolution() {
+            const f = document.getElementById('file-photo').files[0], w = document.getElementById('input-weight-evo').value;
+            if(!f || !w) return alert("Selecione foto e peso!");
+            const comp = await imageCompression(f, { maxSizeMB: 0.2, maxWidthOrHeight: 1280 });
+            const name = `${Date.now()}_shape.jpg`;
+            await _supabase.storage.from('shapes').upload(name, comp);
+            const { data: url } = _supabase.storage.from('shapes').getPublicUrl(name);
+            await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: url.publicUrl, body_weight: w }]);
+            playSuccess(); loadGallery();
         }
 
-        async function loadWorkouts() {
-            const { data } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('category', currentLetter).order('created_at');
-            const sel = document.getElementById('select-exercise-chart');
-            sel.innerHTML = `<option value="">Ver Gráfico de...</option>` + (data || []).map(ex => `<option value="${ex.exercise_name}">${ex.exercise_name}</option>`).join('');
-            document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
-                <div class="glass p-4 rounded-2xl flex justify-between items-center border border-white/5 shadow-md">
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" class="w-5 h-5 rounded-full border-2 border-blue-500 bg-transparent checked:bg-blue-600 transition-all cursor-pointer">
-                        <div><h4 class="font-black uppercase text-xs italic tracking-tighter">${ex.exercise_name}</h4><p class="text-[9px] text-blue-500 font-bold">${ex.weight}kg • ${ex.reps}</p></div>
-                    </div>
-                </div>`).join('') || '<p class="text-center py-6 text-gray-700 text-[10px] italic font-bold uppercase tracking-widest">Aba de Treino Vazia</p>';
-        }
-
-        async function finishSession() { await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]); playSuccess(); updateStats(); loadRanking(); }
-
-        async function updateStats() {
-            const { data } = await _supabase.from('workout_history').select('*').eq('user_id', currentUser.id).order('completed_at', {ascending: false});
-            document.getElementById('history-list').innerHTML = (data || []).slice(0, 5).map(h => `
-                <div class="flex justify-between items-center p-3 glass rounded-xl text-[9px] font-bold text-gray-400 italic">
-                    <span>Sessão de Treino ${h.category}</span><span>${new Date(h.completed_at).toLocaleDateString()}</span>
-                </div>`).join('');
-        }
-
-        // --- GALERIA CORRIGIDA (OPEN FULLSCREEN) ---
-        async function loadGallery() {
-            const { data } = await _supabase.from('evolution_gallery').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false});
-            document.getElementById('list-gallery').innerHTML = (data || []).map(p => `
-                <div onclick="openPhoto('${p.photo_url}', '${p.id}', '${p.body_weight}', '${new Date(p.created_at).toLocaleDateString()}')" class="glass rounded-[2rem] overflow-hidden shadow-2xl cursor-pointer active:scale-95 transition-all">
-                    <img src="${p.photo_url}" class="w-full h-56 object-cover">
-                    <div class="p-4 flex justify-between items-center bg-black/40"><span class="text-blue-500 font-black italic text-[10px]">${new Date(p.created_at).toLocaleDateString()}</span><span class="text-white font-black text-xs">${p.body_weight} KG</span></div>
-                </div>`).join('') || '<p class="text-center text-gray-700 italic text-[10px] py-10 uppercase font-black">Nenhum shape registrado</p>';
-        }
-
-        function openPhoto(url, id, weight, date) {
-            document.getElementById('modal-img').src = url;
-            document.getElementById('modal-info').innerText = `${date} | PESO: ${weight}KG`;
-            document.getElementById('btn-delete-photo').onclick = () => deletePhoto(id);
-            document.getElementById('photo-modal').style.display = 'flex';
-        }
-        function closeModal() { document.getElementById('photo-modal').style.display = 'none'; }
-
-        async function deletePhoto(id) {
-            if(!confirm("Deseja apagar esta foto do seu histórico?")) return;
-            await _supabase.from('evolution_gallery').delete().eq('id', id);
-            closeModal(); loadGallery();
-        }
-
-        // --- GRÁFICO ---
         async function loadLoadChart(exName) {
             if(!exName) return;
             const { data } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('exercise_name', exName).order('created_at');
             const ctx = document.getElementById('loadChart').getContext('2d');
             if(loadChart) loadChart.destroy();
-            loadChart = new Chart(ctx, { type: 'line', data: { labels: data.map(d => new Date(d.created_at).toLocaleDateString()), datasets: [{ data: data.map(d => parseFloat(d.weight)), borderColor: '#3b82f6', tension: 0.3, fill: true, backgroundColor: 'rgba(59,130,246,0.1)' }] }, options: { plugins: { legend: { display: false } } } });
+            loadChart = new Chart(ctx, { type: 'line', data: { labels: data.map(d => new Date(d.created_at).toLocaleDateString()), datasets: [{ data: data.map(d => parseFloat(d.weight)), borderColor: '#3b82f6', tension: 0.4, fill: true, backgroundColor: 'rgba(59,130,246,0.1)' }] }, options: { plugins: { legend: { display: false } } } });
         }
 
-        // --- DIETA ---
         function calculateMacros() {
             const w = parseFloat(document.getElementById('macro-weight').value);
             const g = document.getElementById('macro-goal').value;
@@ -307,29 +331,16 @@
             document.getElementById('macro-result').classList.remove('hidden');
         }
 
-        async function uploadEvolution() {
-            const f = document.getElementById('file-photo').files[0], w = document.getElementById('input-weight-evo').value;
-            if(!f || !w) return alert("Selecione a foto e digite o peso!");
-            const comp = await imageCompression(f, { maxSizeMB: 0.2, maxWidthOrHeight: 1280 });
-            const name = `${Date.now()}_shape.jpg`;
-            await _supabase.storage.from('shapes').upload(name, comp);
-            const { data: url } = _supabase.storage.from('shapes').getPublicUrl(name);
-            await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: url.publicUrl, body_weight: w }]);
-            playSuccess(); loadGallery();
+        async function finishSession() { await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]); playSuccess(); updateStats(); loadRanking(); }
+        async function updateStats() { const { data } = await _supabase.from('workout_history').select('*').eq('user_id', currentUser.id).order('completed_at', {ascending: false}); document.getElementById('history-list').innerHTML = (data || []).slice(0, 5).map(h => `<div class="flex justify-between items-center p-4 glass rounded-2xl text-[10px] font-black text-gray-400"><span>Sessão ${h.category}</span><span>${new Date(h.completed_at).toLocaleDateString()}</span></div>`).join(''); }
+        async function updateMemberCount() { const { data } = await _supabase.from('profiles').select('id'); document.getElementById('member-count').innerText = String(data ? data.length : 0).padStart(4, '0'); }
+        function switchView(v) { 
+            ['workouts','evolution','macros','rank'].forEach(id => document.getElementById('view-'+id).classList.add('hidden')); 
+            document.getElementById('view-'+v).classList.remove('hidden'); 
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-view')); 
+            document.getElementById('nav-'+v).classList.add('active-view'); 
+            if(v === 'evolution') loadGallery(); // Força recarregar galeria ao entrar na aba
         }
-
-        async function updateMemberCount() {
-            const { data } = await _supabase.from('profiles').select('id');
-            document.getElementById('member-count').innerText = String(data ? data.length : 0).padStart(4, '0');
-        }
-
-        function switchView(v) {
-            ['workouts','evolution','macros','rank'].forEach(id => document.getElementById('view-'+id).classList.add('hidden'));
-            document.getElementById('view-'+v).classList.remove('hidden');
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-view'));
-            document.getElementById('nav-'+v).classList.add('active-view');
-        }
-
         function changeLetter(l, btn) { currentLetter = l; document.getElementById('finish-label').innerText = l; document.getElementById('label-letter').innerText = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-tab')); btn.classList.add('active-tab'); loadWorkouts(); }
     </script>
 </body>
