@@ -12,8 +12,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #000; color: #fff; min-height: 100vh; }
         .nav-bottom { background: #000; border-top: 1px solid #262626; position: fixed; bottom: 0; width: 100%; height: 65px; z-index: 100; display: flex; justify-content: space-around; align-items: center; }
         .post-card { border-bottom: 1px solid #262626; padding-bottom: 15px; }
-        .btn-blue { background-color: #0095f6; border-radius: 8px; font-weight: 700; transition: opacity 0.2s; }
-        .btn-blue:active { opacity: 0.7; }
+        .btn-blue { background-color: #0095f6; border-radius: 8px; font-weight: 700; }
         .glass-card { background: #121212; border: 1px solid #262626; border-radius: 12px; }
         input, select, textarea { background: #121212 !important; border: 1px solid #262626 !important; color: white !important; border-radius: 8px !important; outline: none; }
         ::-webkit-scrollbar { display: none; }
@@ -27,21 +26,26 @@
     <div id="section-login" class="flex flex-col items-center justify-center min-h-screen p-6">
         <h1 class="text-3xl font-black italic tracking-tighter mb-12 uppercase">Sanja<span class="text-blue-500">Fit</span></h1>
         <div class="w-full max-w-sm space-y-4 text-center">
-            <input id="login-user" type="text" placeholder="Usuário ou @instagram" class="w-full p-4">
+            <input id="login-user" type="text" placeholder="@seu_instagram" class="w-full p-4">
             <input id="login-pass" type="password" placeholder="Senha" class="w-full p-4">
-            <button onclick="handleSignIn()" class="w-full btn-blue p-3 text-sm uppercase">Entrar</button>
-            <button onclick="handleSignUp()" class="w-full text-blue-500 text-xs font-bold mt-4">Criar Conta de Atleta</button>
+            <button onclick="handleSignIn()" class="w-full btn-blue p-3 text-sm">Entrar</button>
+            <button onclick="handleSignUp()" class="w-full text-blue-500 text-xs font-bold mt-4">Criar Conta</button>
         </div>
     </div>
 
     <div id="section-app" class="hidden max-w-lg mx-auto">
         <header class="sticky top-0 bg-black border-b border-[#262626] p-4 flex justify-between items-center z-50">
             <h1 class="text-xl font-black italic tracking-tighter">Sanja<span class="text-blue-500">Fit</span></h1>
-            <button onclick="handleSignOut()" class="text-[10px] font-bold text-red-500 uppercase tracking-widest">Sair</button>
+            <button onclick="handleSignOut()" class="text-[10px] font-bold text-red-500 uppercase">Sair</button>
         </header>
 
         <div id="view-feed" class="p-0">
             <div id="public-feed-list" class="divide-y divide-[#262626]"></div>
+        </div>
+
+        <div id="view-search" class="hidden p-4 space-y-4">
+            <input id="search-input" type="text" oninput="filterAthletes()" placeholder="Pesquisar atleta pelo @..." class="w-full p-3 rounded-xl text-sm border border-[#262626]">
+            <div id="ranking-list" class="space-y-4"></div>
         </div>
 
         <div id="view-workouts" class="hidden p-4 space-y-6">
@@ -54,44 +58,36 @@
                 <input id="in-name" type="text" placeholder="Nome do exercício" class="w-full p-3 text-sm">
                 <div class="flex gap-2">
                     <input id="in-weight" type="number" placeholder="Peso" class="w-full p-3 text-sm">
-                    <input id="in-reps" type="text" placeholder="Reps" class="w-full p-3 text-sm">
+                    <input id="in-reps" type="text" placeholder="Séries" class="w-full p-3 text-sm">
                 </div>
-                <button id="btn-save" onclick="saveWorkout()" class="w-full btn-blue p-3 text-xs">Salvar Exercício</button>
-                <button id="btn-cancel" onclick="cancelEdit()" class="hidden w-full text-[10px] text-gray-500 underline uppercase">Cancelar</button>
+                <button id="btn-save" onclick="saveWorkout()" class="w-full btn-blue p-3 text-xs">Salvar</button>
+                <button id="btn-cancel" onclick="cancelEdit()" class="hidden w-full text-[10px] text-gray-500 underline">Cancelar</button>
             </div>
             <div id="list-workouts" class="space-y-3"></div>
-            <button onclick="finishSession()" class="w-full bg-green-600 p-4 rounded-xl font-black italic text-sm">REGISTRAR TREINO PAGO 🔥</button>
-        </div>
-
-        <div id="view-post" class="hidden p-6">
-            <div class="glass-card p-6 text-center space-y-4">
-                <h2 class="text-sm font-black uppercase text-blue-500 italic">Novo Post de Evolução</h2>
-                <input type="file" id="file-photo" accept="image/*" class="text-xs">
-                <input id="input-weight-evo" type="number" placeholder="Peso atual (kg)" class="w-full p-4 text-center">
-                <button onclick="uploadEvolution()" class="w-full btn-blue p-4 text-sm font-black uppercase">Publicar no Feed</button>
-            </div>
+            <button onclick="finishSession()" class="w-full bg-green-600 p-4 rounded-xl font-black italic">CONCLUIR TREINO PAGO 🔥</button>
         </div>
 
         <div id="view-profile" class="hidden">
             <div class="p-6 space-y-6">
-                <div class="flex items-center gap-6">
+                <div class="flex items-center gap-8">
                     <div class="relative">
-                        <div class="w-24 h-24 rounded-full border-2 border-[#262626] overflow-hidden bg-[#121212] flex items-center justify-center">
+                        <div class="w-20 h-20 rounded-full border border-[#262626] overflow-hidden bg-[#121212] flex items-center justify-center">
                             <img id="profile-img-display" src="" class="w-full h-full object-cover hidden">
-                            <span id="profile-icon" class="text-4xl">👤</span>
+                            <span id="profile-icon" class="text-3xl">👤</span>
                         </div>
-                        <button onclick="document.getElementById('file-avatar').click()" class="absolute bottom-0 right-0 bg-blue-500 p-2 rounded-full text-xs">📷</button>
+                        <button onclick="document.getElementById('file-avatar').click()" class="absolute bottom-0 right-0 bg-blue-500 p-1 rounded-full text-[10px]">📷</button>
                         <input type="file" id="file-avatar" accept="image/*" class="hidden" onchange="uploadAvatar()">
                     </div>
-                    <div class="flex-1">
-                        <h2 id="profile-name" class="font-black text-lg">@atleta</h2>
-                        <p id="profile-bio" class="text-xs text-gray-400 mt-1 italic">Treinando firme...</p>
-                        <button onclick="toggleBioEdit()" class="w-full bg-[#262626] p-2 rounded-md text-[10px] font-black mt-4 uppercase">Editar Bio</button>
+                    <div class="flex flex-1 justify-around text-center">
+                        <div><p id="stat-photos" class="font-bold text-sm">0</p><p class="text-[9px] text-gray-500 uppercase font-black">Fotos</p></div>
+                        <div><p id="stat-followers" class="font-bold text-sm">12</p><p class="text-[9px] text-gray-500 uppercase font-black">Seguidores</p></div>
+                        <div><p id="stat-likes" class="font-bold text-sm">0</p><p class="text-[9px] text-gray-500 uppercase font-black">Curtidas</p></div>
                     </div>
                 </div>
-                <div id="bio-edit" class="hidden space-y-2">
-                    <textarea id="input-bio" class="w-full p-3 text-xs h-20" placeholder="Escreva sua nova bio..."></textarea>
-                    <button onclick="saveBio()" class="w-full btn-blue p-2 text-xs">Salvar</button>
+                <div>
+                    <h2 id="profile-name" class="font-bold text-sm">@atleta</h2>
+                    <p id="profile-bio" class="text-xs mt-1 text-gray-400">Bio do atleta...</p>
+                    <button onclick="toggleBioEdit()" class="w-full bg-[#363636] p-2 rounded-md text-[10px] font-bold mt-4 uppercase">Editar Perfil</button>
                 </div>
             </div>
             <div id="my-gallery" class="grid grid-cols-3 gap-[2px]"></div>
@@ -99,8 +95,8 @@
 
         <nav class="nav-bottom">
             <button onclick="switchView('feed')" id="nav-feed" class="text-2xl active-nav">🏠</button>
+            <button onclick="switchView('search')" id="nav-search" class="text-2xl">🔍</button>
             <button onclick="switchView('workouts')" id="nav-workouts" class="text-2xl">📋</button>
-            <button onclick="switchView('post')" id="nav-post" class="text-2xl">➕</button>
             <button onclick="switchView('profile')" id="nav-profile" class="text-2xl">👤</button>
         </nav>
     </div>
@@ -110,7 +106,7 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhemd0c29ia3lreHdzdmJtamZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxOTg4NTYsImV4cCI6MjA4ODc3NDg1Nn0.Ci_Hzqzf9Px8LTg7dNOXcu1dcTzBYWioH2yaFP2h6rI';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let currentUser = null, currentLetter = 'A', editingId = null;
+        let currentUser = null, currentLetter = 'A', editingId = null, allProfiles = [];
 
         window.onload = async () => {
             const { data: { user } } = await _supabase.auth.getUser();
@@ -122,119 +118,16 @@
             document.getElementById('section-login').classList.add('hidden');
             document.getElementById('section-app').classList.remove('hidden');
             document.getElementById('profile-name').innerText = user.user_metadata.instagram || `@atleta`;
-            loadPublicFeed(); loadWorkouts(); loadGallery(); loadBio();
+            loadPublicFeed(); loadWorkouts(); loadGallery(); loadRanking(); loadBio();
         }
 
-        // --- FEED, LIKES E COMENTÁRIOS ---
-        async function loadPublicFeed() {
-            const { data: posts } = await _supabase.from('evolution_gallery').select('*, profiles(instagram, avatar_url), likes(user_id), comments(*, profiles(instagram))').order('created_at', {ascending: false});
-            const list = document.getElementById('public-feed-list');
-            
-            list.innerHTML = (posts || []).map(p => {
-                const userLiked = p.likes?.some(l => l.user_id === currentUser.id);
-                const isPostOwner = p.user_id === currentUser.id;
-                
-                const commentsHtml = (p.comments || []).map(c => {
-                    const canDelete = (c.user_id === currentUser.id) || isPostOwner;
-                    return `
-                        <div class="flex justify-between items-center text-[11px] mb-1">
-                            <p><span class="font-bold mr-1">${c.profiles?.instagram || '@atleta'}:</span>${c.text}</p>
-                            ${canDelete ? `<button onclick="deleteComment('${c.id}')" class="text-[9px] text-gray-500 hover:text-red-500">Excluir</button>` : ''}
-                        </div>`;
-                }).join('');
-
-                return `
-                <div class="post-card bg-black">
-                    <div class="flex items-center gap-3 p-3">
-                        <img src="${p.profiles?.avatar_url || 'https://via.placeholder.com/40'}" class="w-8 h-8 rounded-full object-cover border border-[#262626]">
-                        <span class="text-xs font-bold tracking-tighter">${p.profiles?.instagram || '@atleta'}</span>
-                    </div>
-                    <img src="${p.photo_url}" class="w-full aspect-square object-cover" ondblclick="handleLike('${p.id}')">
-                    <div class="p-3 space-y-2">
-                        <div class="flex gap-4">
-                            <button onclick="handleLike('${p.id}')" class="text-2xl ${userLiked ? 'heart-active' : ''}">${userLiked ? '❤️' : '🤍'}</button>
-                        </div>
-                        <p class="text-[11px] font-black">${p.likes?.length || 0} curtidas</p>
-                        <div class="space-y-1">${commentsHtml}</div>
-                        <div class="flex gap-2 mt-2 pt-2 border-t border-[#121212]">
-                            <input id="cm-input-${p.id}" type="text" placeholder="Comentar..." class="flex-1 bg-transparent text-[11px] border-none outline-none">
-                            <button onclick="handleComment('${p.id}')" class="text-blue-500 font-bold text-[11px] uppercase">Postar</button>
-                        </div>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        async function handleLike(postId) {
-            const { data: existing } = await _supabase.from('likes').select('*').eq('post_id', postId).eq('user_id', currentUser.id).single();
-            if(existing) await _supabase.from('likes').delete().eq('id', existing.id);
-            else await _supabase.from('likes').insert([{ post_id: postId, user_id: currentUser.id }]);
-            loadPublicFeed();
-        }
-
-        async function handleComment(postId) {
-            const input = document.getElementById(`cm-input-${postId}`);
-            const text = input.value.trim();
-            if(!text) return;
-            await _supabase.from('comments').insert([{ post_id: postId, user_id: currentUser.id, text: text }]);
-            input.value = '';
-            loadPublicFeed();
-        }
-
-        async function deleteComment(commentId) {
-            if(!confirm("Apagar comentário?")) return;
-            await _supabase.from('comments').delete().eq('id', commentId);
-            loadPublicFeed();
-        }
-
-        // --- GESTÃO DE TREINOS ---
-        async function saveWorkout() {
-            const n = document.getElementById('in-name').value, w = document.getElementById('in-weight').value, r = document.getElementById('in-reps').value;
-            if(!n || !w) return alert("Preencha os campos!");
-            const payload = { user_id: currentUser.id, category: currentLetter, exercise_name: n, weight: String(w), reps: String(r) };
-            if(editingId) { await _supabase.from('workouts').update(payload).eq('id', editingId); editingId = null; }
-            else { await _supabase.from('workouts').insert([payload]); }
-            cancelEdit(); loadWorkouts();
-        }
-
-        function editEx(ex) {
-            editingId = ex.id;
-            document.getElementById('in-name').value = ex.exercise_name;
-            document.getElementById('in-weight').value = ex.weight;
-            document.getElementById('in-reps').value = ex.reps;
-            document.getElementById('btn-cancel').classList.remove('hidden');
-            document.getElementById('btn-save').innerText = "Atualizar Exercício";
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
-
-        function cancelEdit() {
-            editingId = null;
-            document.getElementById('in-name').value = ''; document.getElementById('in-weight').value = ''; document.getElementById('in-reps').value = '';
-            document.getElementById('btn-cancel').classList.add('hidden');
-            document.getElementById('btn-save').innerText = "Salvar Exercício";
-        }
-
-        async function loadWorkouts() {
-            const { data } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('category', currentLetter).order('created_at');
-            document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
-                <div class="glass-card p-4 flex justify-between items-center">
-                    <div><h4 class="text-xs font-bold uppercase">${ex.exercise_name}</h4><p class="text-[10px] text-blue-500 font-bold">${ex.weight}kg • ${ex.reps}</p></div>
-                    <div class="flex gap-4">
-                        <button onclick='editEx(${JSON.stringify(ex)})' class="text-blue-500 text-[10px] font-bold underline">EDITAR</button>
-                        <button onclick="deleteEx('${ex.id}')" class="text-red-500 text-[10px] font-bold">X</button>
-                    </div>
-                </div>`).join('');
-        }
-
-        async function deleteEx(id) { if(confirm("Remover exercício?")) { await _supabase.from('workouts').delete().eq('id', id); loadWorkouts(); } }
-
-        // --- PERFIL E AVATAR ---
+        // --- FOTO DE PERFIL E BIO ---
         async function uploadAvatar() {
             const file = document.getElementById('file-avatar').files[0];
             if(!file) return;
             const comp = await imageCompression(file, { maxSizeMB: 0.1, maxWidthOrHeight: 400 });
             const name = `avatar_${currentUser.id}.jpg`;
-            const { error } = await _supabase.storage.from('shapes').upload(name, comp, { upsert: true });
+            await _supabase.storage.from('shapes').upload(name, comp, { upsert: true });
             const { data: url } = _supabase.storage.from('shapes').getPublicUrl(name);
             await _supabase.from('profiles').update({ avatar_url: url.publicUrl }).eq('id', currentUser.id);
             location.reload();
@@ -250,55 +143,108 @@
             }
         }
 
-        function toggleBioEdit() { document.getElementById('bio-edit').classList.toggle('hidden'); }
-        async function saveBio() {
-            const bio = document.getElementById('input-bio').value;
-            await _supabase.from('profiles').update({ bio }).eq('id', currentUser.id);
-            document.getElementById('profile-bio').innerText = bio;
-            toggleBioEdit();
+        // --- BUSCA E RANKING ---
+        async function loadRanking() {
+            const { data } = await _supabase.from('profiles').select('*');
+            allProfiles = data || [];
+            filterAthletes();
         }
 
-        // --- UTILITÁRIOS ---
+        function filterAthletes() {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const list = document.getElementById('ranking-list');
+            const filtered = allProfiles.filter(p => p.instagram.toLowerCase().includes(term));
+            
+            list.innerHTML = filtered.map(p => `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-[#121212] overflow-hidden border border-[#262626]">
+                            <img src="${p.avatar_url || ''}" class="w-full h-full object-cover ${p.avatar_url ? '' : 'hidden'}">
+                            <div class="${p.avatar_url ? 'hidden' : ''} flex items-center justify-center h-full text-xs">👤</div>
+                        </div>
+                        <div><p class="text-xs font-bold">${p.instagram}</p><p class="text-[9px] text-gray-500 italic">Atleta SanjaFit</p></div>
+                    </div>
+                    <button class="btn-blue px-3 py-1 text-[10px]">Seguir</button>
+                </div>`).join('');
+        }
+
+        // --- FEED E LIKES ---
+        async function loadPublicFeed() {
+            const { data: posts } = await _supabase.from('evolution_gallery').select('*, profiles(instagram, avatar_url), likes(user_id)').order('created_at', {ascending: false});
+            const list = document.getElementById('public-feed-list');
+            
+            // Calcula curtidas totais do usuário logado para o perfil
+            const myLikes = posts?.filter(p => p.user_id === currentUser.id).reduce((acc, curr) => acc + (curr.likes?.length || 0), 0);
+            document.getElementById('stat-likes').innerText = myLikes || 0;
+
+            list.innerHTML = (posts || []).map(p => {
+                const userLiked = p.likes?.some(l => l.user_id === currentUser.id);
+                return `
+                <div class="post-card">
+                    <div class="flex items-center gap-3 p-3">
+                        <img src="${p.profiles?.avatar_url || 'https://via.placeholder.com/40'}" class="w-8 h-8 rounded-full object-cover border border-[#262626]">
+                        <span class="text-xs font-bold tracking-tighter">${p.profiles?.instagram || '@atleta'}</span>
+                    </div>
+                    <img src="${p.photo_url}" class="w-full aspect-square object-cover" ondblclick="handleLike('${p.id}')">
+                    <div class="p-3">
+                        <button onclick="handleLike('${p.id}')" class="text-2xl ${userLiked ? 'heart-active' : ''}">${userLiked ? '❤️' : '🤍'}</button>
+                        <p class="text-[11px] font-black mt-1">${p.likes?.length || 0} curtidas</p>
+                        <p class="text-[10px] text-gray-500 mt-1 uppercase italic">Peso: ${p.body_weight}kg • ${new Date(p.created_at).toLocaleDateString()}</p>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function handleLike(postId) {
+            const { data: existing } = await _supabase.from('likes').select('*').eq('post_id', postId).eq('user_id', currentUser.id).single();
+            if(existing) await _supabase.from('likes').delete().eq('id', existing.id);
+            else await _supabase.from('likes').insert([{ post_id: postId, user_id: currentUser.id }]);
+            loadPublicFeed();
+        }
+
+        // --- TREINOS ---
+        async function loadWorkouts() {
+            const { data } = await _supabase.from('workouts').select('*').eq('user_id', currentUser.id).eq('category', currentLetter).order('created_at');
+            document.getElementById('list-workouts').innerHTML = (data || []).map(ex => `
+                <div class="glass-card p-4 flex justify-between items-center">
+                    <div><h4 class="text-xs font-bold uppercase">${ex.exercise_name}</h4><p class="text-[10px] text-blue-500 font-bold">${ex.weight}kg • ${ex.reps}</p></div>
+                    <button onclick='editEx(${JSON.stringify(ex)})' class="text-blue-500 text-[10px] font-bold">EDITAR</button>
+                </div>`).join('');
+        }
+
+        function editEx(ex) {
+            editingId = ex.id;
+            document.getElementById('in-name').value = ex.exercise_name;
+            document.getElementById('in-weight').value = ex.weight;
+            document.getElementById('in-reps').value = ex.reps;
+            document.getElementById('btn-cancel').classList.remove('hidden');
+            document.getElementById('btn-save').innerText = "Atualizar Exercício";
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        async function loadGallery() {
+            const { data } = await _supabase.from('evolution_gallery').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false});
+            document.getElementById('stat-photos').innerText = data ? data.length : 0;
+            document.getElementById('my-gallery').innerHTML = (data || []).map(p => `<img src="${p.photo_url}" class="aspect-square object-cover border-[0.5px] border-black">`).join('');
+        }
+
         function switchView(v) {
-            ['feed','workouts','post','profile'].forEach(id => {
+            ['feed','search','workouts','profile'].forEach(id => {
                 document.getElementById('view-'+id).classList.add('hidden');
                 document.getElementById('nav-'+id).classList.remove('active-nav');
             });
             document.getElementById('view-'+v).classList.remove('hidden');
             document.getElementById('nav-'+v).classList.add('active-nav');
             if(v === 'feed') loadPublicFeed();
+            if(v === 'search') loadRanking();
         }
 
-        function changeLetter(l, btn) {
-            currentLetter = l;
-            document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-nav'));
-            btn.classList.add('active-nav');
-            loadWorkouts();
-        }
-
-        async function uploadEvolution() {
-            const f = document.getElementById('file-photo').files[0], w = document.getElementById('input-weight-evo').value;
-            if(!f) return alert("Selecione uma foto!");
-            const comp = await imageCompression(f, { maxSizeMB: 0.2, maxWidthOrHeight: 1080 });
-            const name = `shape_${Date.now()}.jpg`;
-            await _supabase.storage.from('shapes').upload(name, comp);
-            const { data: url } = _supabase.storage.from('shapes').getPublicUrl(name);
-            await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: url.publicUrl, body_weight: w }]);
-            switchView('feed');
-        }
-
-        async function loadGallery() {
-            const { data } = await _supabase.from('evolution_gallery').select('*').eq('user_id', currentUser.id).order('created_at', {ascending: false});
-            document.getElementById('my-gallery').innerHTML = (data || []).map(p => `<img src="${p.photo_url}" class="aspect-square object-cover border-[0.5px] border-black">`).join('');
-        }
-
+        // --- AUTH ---
         async function handleSignIn() {
             const u = document.getElementById('login-user').value.trim().replace('@',''), p = document.getElementById('login-pass').value;
             const { data, error } = await _supabase.auth.signInWithPassword({ email: `${u}@sanjafit.com`, password: p });
-            if(error) return alert("Erro de login!");
-            location.reload();
+            if(error) return alert("Erro!"); location.reload();
         }
-
         async function handleSignUp() {
             const u = document.getElementById('login-user').value.trim().replace('@',''), p = document.getElementById('login-pass').value;
             const { data, error } = await _supabase.auth.signUp({ email: `${u}@sanjafit.com`, password: p });
@@ -306,9 +252,25 @@
             await _supabase.from('profiles').upsert({ id: data.user.id, instagram: `@${u}` });
             alert("Atleta Criado!");
         }
-
         async function handleSignOut() { await _supabase.auth.signOut(); localStorage.clear(); location.reload(); }
-        async function finishSession() { await _supabase.from('workout_history').insert([{ user_id: currentUser.id, category: currentLetter }]); alert("Treino Pago! 🔥"); }
+        
+        // --- AUXILIARES ---
+        function changeLetter(l, btn) { currentLetter = l; document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active-nav')); btn.classList.add('active-nav'); loadWorkouts(); }
+        async function saveWorkout() {
+            const n = document.getElementById('in-name').value, w = document.getElementById('in-weight').value, r = document.getElementById('in-reps').value;
+            if(editingId) await _supabase.from('workouts').update({exercise_name:n, weight:String(w), reps:String(r)}).eq('id', editingId);
+            else await _supabase.from('workouts').insert([{user_id:currentUser.id, category:currentLetter, exercise_name:n, weight:String(w), reps:String(r)}]);
+            editingId = null; location.reload();
+        }
+        async function uploadEvolution() {
+            const f = document.getElementById('file-photo').files[0], w = document.getElementById('input-weight-evo').value;
+            const comp = await imageCompression(f, { maxSizeMB: 0.2, maxWidthOrHeight: 1080 });
+            const name = `shape_${Date.now()}.jpg`;
+            await _supabase.storage.from('shapes').upload(name, comp);
+            const { data: url } = _supabase.storage.from('shapes').getPublicUrl(name);
+            await _supabase.from('evolution_gallery').insert([{ user_id: currentUser.id, photo_url: url.publicUrl, body_weight: w }]);
+            switchView('feed');
+        }
     </script>
 </body>
 </html>
